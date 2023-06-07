@@ -18,7 +18,6 @@ import Humanize from "humanize-plus";
 
 
 const Information = ({data, handleReport}) => {
-
     const output_items = useSelector(state => state.Logistic.summary_items)
     const dispatch = useDispatch();
 

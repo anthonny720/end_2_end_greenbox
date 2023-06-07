@@ -8,7 +8,7 @@ import {map} from "lodash";
 import {add_output_items} from "../../../redux/actions/logistic";
 
 
-const FormOutput = ({close, items}) => {
+const FormOutput = ({close, items,lot}) => {
     const columns = [
         {name: 'kg', title: 'Kg', type: 'number', maxLength: 7},
     ]
@@ -19,7 +19,7 @@ const FormOutput = ({close, items}) => {
         validationSchema: Yup.object(newSchema()),
         validateOnChange: true,
         onSubmit: (form, onSubmitProps) => {
-            dispatch(add_output_items(form))
+            dispatch(add_output_items(form,lot))
             close()
         }
     })

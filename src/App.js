@@ -23,8 +23,7 @@ import Samples from "./containers/pages/Sales/Samples";
 import Form from "./containers/pages/Sales/Form";
 import Status from "./containers/pages/Quality/Status";
 import Report from "./containers/pages/Operations/Report";
-import Materials from "./containers/pages/Inventory/Materials";
-import Products from "./containers/pages/Inventory/Products";
+
 import MOD from "./containers/pages/Production/MOD";
 import Process from "./containers/pages/Production/Process";
 import ChangePassword from "./containers/auth/Password";
@@ -72,9 +71,6 @@ const App = () => {
                         {/*Settings*/}
                         <Route path="settings/users" element={<Users/>}/>
 
-                        {/*Inventory*/}
-                        <Route path="inventories/materials" element={<Materials/>}/>
-                        <Route path="inventories/products" element={<Products/>}/>
 
                         {/*Operations*/}
                         <Route exact path="operations/records/:category" element={<Report/>}/>

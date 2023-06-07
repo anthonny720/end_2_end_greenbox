@@ -33,7 +33,7 @@ DJANGO_APPS = ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.co
                'django.contrib.messages', 'django.contrib.staticfiles', ]
 
 PROJECT_APPS = ['apps.collection', 'apps.users', 'apps.logistic', 'apps.sales', 'apps.management',
-                'apps.operations_and_planning', 'apps.inventory', 'apps.quality_assurance', 'apps.production',
+                'apps.operations_and_planning',  'apps.quality_assurance', 'apps.production',
                 'apps.finances']
 
 THIRD_PARTY_APPS = ['corsheaders', 'simple_history', 'rest_framework', 'import_export', 'djoser', 'multiselectfield',

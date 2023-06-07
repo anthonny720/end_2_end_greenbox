@@ -7,7 +7,6 @@ from core import settings
 
 urlpatterns = [path('admin/', admin.site.urls),
                path('api/collection/', include('apps.collection.urls'), name='collection'),
-               path('api/inventory/', include('apps.inventory.urls'), name='inventory'),
                path('api/logistic/', include('apps.logistic.urls'), name='logistic'),
                path('api/management/', include('apps.management.urls'), name='management'),
                path('api/operations/', include('apps.operations_and_planning.urls'), name='operations'),

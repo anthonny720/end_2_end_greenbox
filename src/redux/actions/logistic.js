@@ -449,7 +449,7 @@ export const delete_motion_boxes = (id) => async dispatch => {
 }
 
 
-export const add_output_items = (form) => async dispatch => {
+export const add_output_items = (form,lot) => async dispatch => {
     const config = {
         headers: {
             'Authorization': `JWT ${localStorage.getItem('access')}`, 'Accept': 'application/json'
@@ -462,7 +462,7 @@ export const add_output_items = (form) => async dispatch => {
             dispatch({
                 type: ADD_OUTPUT_ITEM_SUCCESS, payload: res.data
             });
-            dispatch(get_output_items());
+            dispatch(get_output_items(lot));
             dispatch(setAlert(res.data.message, 'success'));
         } else {
             dispatch({

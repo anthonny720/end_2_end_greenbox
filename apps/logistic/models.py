@@ -328,7 +328,7 @@ class ILot(models.Model):
     gn = models.IntegerField(default=0, verbose_name="Gandules")
     ma = models.IntegerField(default=0, verbose_name="Madera")
     pallet = models.ForeignKey(Pallets, on_delete=models.PROTECT, verbose_name="Pallet", related_name="pallets")
-    tare = models.DecimalField(default=0, verbose_name="Tara", max_digits=6, decimal_places=2)
+    tare = models.FloatField(default=0, verbose_name="Tara")
     c6 = models.IntegerField(default=0, verbose_name="Calibre 6")
     c8 = models.IntegerField(default=0, verbose_name="Calibre 8")
     c10 = models.IntegerField(default=0, verbose_name="Calibre 10")

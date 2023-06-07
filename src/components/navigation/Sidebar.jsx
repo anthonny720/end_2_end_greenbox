@@ -7,7 +7,6 @@ import {
     faArrowTrendUp,
     faBoxes,
     faBoxesPacking,
-    faBoxesStacked,
     faBrain,
     faBusAlt,
     faChartBar,
@@ -24,7 +23,6 @@ import {
     faHandsAslInterpreting,
     faIndustry,
     faLeaf,
-    faListCheck,
     faMagnifyingGlassChart,
     faMicroscope,
     faMoneyCheckDollar,
@@ -44,16 +42,6 @@ const Sidebar = () => {
             name: "Parcelas",
             link: "/collection/parcels",
             icon: faCompass
-        },]
-    }, {
-        name: "Inventarios",
-        link: "/inventories",
-        icon: faBoxesStacked,
-        margin: true,
-        submenus: [{name: "Producto Terminado", link: "/inventories/products", icon: faListCheck}, {
-            name: "Materiales",
-            link: "/inventories/materials",
-            icon: faCity
         },]
     }, {
         name: "Logística",

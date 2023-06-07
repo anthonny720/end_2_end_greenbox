@@ -74,7 +74,7 @@ const RawMaterial = () => {
     const handleOutput = () => {
         setIsOpen(true)
         setContent(<div className={"h-full md:h-screen"}>
-            <FormOutput items={data} close={openModal}/>
+            <FormOutput items={data} close={openModal} lot={lot}/>
         </div>)
     }
     const handleUpdateForm = (data) => {

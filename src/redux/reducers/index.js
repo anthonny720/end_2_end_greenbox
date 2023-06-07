@@ -6,13 +6,12 @@ import Alert from "./alert";
 import Quality from "./quality";
 import Sales from "./sales";
 import Operations from "./operations";
-import Inventory from "./inventory";
 import Production from "./production";
 import Auth from "./auth";
 import Finances from "./finances";
 
 
 export default combineReducers({
-    Collection, Management, Logistic, Alert, Quality, Sales, Operations, Inventory, Production, Auth,Finances
+    Collection, Management, Logistic, Alert, Quality, Sales, Operations, Production, Auth,Finances
 
 });
