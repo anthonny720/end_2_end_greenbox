@@ -28,7 +28,6 @@ import MOD from "./containers/pages/Production/MOD";
 import Process from "./containers/pages/Production/Process";
 import ChangePassword from "./containers/auth/Password";
 import Costs from "./containers/pages/Finances/Costs";
-import KPI from "./containers/pages/Operations/KPI";
 
 
 const App = () => {
@@ -74,7 +73,6 @@ const App = () => {
 
                         {/*Operations*/}
                         <Route exact path="operations/records/:category" element={<Report/>}/>
-                        <Route exact path="operations/kpi" element={<KPI/>}/>
 
                         {/*Finance*/}
                         <Route exact path="finance/costs" element={<Costs/>}/>

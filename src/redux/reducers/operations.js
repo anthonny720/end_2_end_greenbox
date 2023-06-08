@@ -1,12 +1,8 @@
 import {
-    GET_KPI_FAIL,
-    GET_KPI_SUCCESS,
     GET_RECORDS_MP_FAIL,
     GET_RECORDS_MP_SUCCESS,
     LOADING_RECORDS_MP_FAIL,
     LOADING_RECORDS_MP_SUCCESS,
-    UPDATE_KPI_FAIL,
-    UPDATE_KPI_SUCCESS,
     UPDATE_RECORD_MP_SUCCESS,
     UPDATE_SAMPLE_FAIL,
 } from "../actions/types";
@@ -38,26 +34,14 @@ export default function Operations(state = initialState, action) {
             return {
                 ...state, lots: null, summary: null
             }
-        case GET_KPI_SUCCESS:
-            return {
-                ...state, kpi: payload.data
-            }
-        case GET_KPI_FAIL:
-            return {
-                ...state, kpi: null
-            }
+
 
         case UPDATE_RECORD_MP_SUCCESS:
         case UPDATE_SAMPLE_FAIL:
             return {
                 ...state
             }
-        case UPDATE_KPI_SUCCESS:
-        case UPDATE_KPI_FAIL:
 
-            return {
-                ...state
-            }
         default:
             return state
     }

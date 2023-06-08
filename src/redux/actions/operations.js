@@ -1,13 +1,9 @@
 import axios from "axios";
 import {
-    GET_KPI_FAIL,
-    GET_KPI_SUCCESS,
     GET_RECORDS_MP_FAIL,
     GET_RECORDS_MP_SUCCESS,
     LOADING_RECORDS_MP_FAIL,
     LOADING_RECORDS_MP_SUCCESS,
-    UPDATE_KPI_FAIL,
-    UPDATE_KPI_SUCCESS,
     UPDATE_RECORD_MP_FAIL,
     UPDATE_RECORD_MP_SUCCESS
 } from "./types";
@@ -66,59 +62,3 @@ export const update_records_mp = (id, form, category, params) => async dispatch 
     }
 }
 
-export const get_kpi = (category, params) => async dispatch => {
-    const config = {
-        headers: {
-            'Authorization': `JWT ${localStorage.getItem('access')}`, 'Accept': 'application/json'
-        }, params: {
-            ...params
-        }
-    };
-    try {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/operations/kpi/${category}`, config);
-        if (res.status === 200) {
-            dispatch({
-                type: GET_KPI_SUCCESS, payload: res.data
-            });
-        } else {
-            dispatch({
-                type: GET_KPI_FAIL
-            });
-        }
-    } catch (err) {
-        dispatch({
-            type: GET_KPI_FAIL
-        });
-
-    }
-}
-
-
-export const update_kpi = (category, id, form, params) => async dispatch => {
-    const config = {
-        headers: {
-            'Authorization': `JWT ${localStorage.getItem('access')}`, 'Accept': 'application/json'
-        },
-    };
-    try {
-        const res = await axios.patch(`${process.env.REACT_APP_API_URL}/api/operations/kpi/${category}/${id}`, form, config);
-        if (res.status === 200) {
-            dispatch({
-                type: UPDATE_KPI_SUCCESS
-            });
-            dispatch(get_kpi(category, params));
-            dispatch(setAlert(res.data.message, 'success'));
-        } else {
-            dispatch({
-                type: UPDATE_KPI_FAIL
-            });
-        }
-    } catch (err) {
-        dispatch({
-            type: UPDATE_KPI_FAIL
-        });
-        dispatch(setAlert(err.response.data['error'], 'error'));
-
-
-    }
-}

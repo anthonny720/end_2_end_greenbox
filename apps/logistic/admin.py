@@ -14,7 +14,7 @@ class LotAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     search_fields = ('lot',)
     list_editable = ('closed',)
     list_display_links = ('lot',)
-    ordering = ['lot']
+    ordering = ['-entry_date']
     date_hierarchy = 'entry_date'
     list_filter = ('maquila', 'product', 'provider', 'closed')
     list_per_page = 25

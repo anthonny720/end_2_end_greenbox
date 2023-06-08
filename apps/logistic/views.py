@@ -11,9 +11,10 @@ from rest_framework.views import APIView
 
 from apps.finances.models import ReportCost
 from apps.logistic.models import Lot, ILot, Motions, Pallets, Output, RegisterOutput
-from apps.logistic.serializers import LotSerializer, ILotSerializer, MotionsSerializer, PalletsSerializer, OutputSerializer, LotSummarySerializer, RegisterOutputSerializer, SummaryOutputSerializer
+from apps.logistic.serializers import LotSerializer, ILotSerializer, MotionsSerializer, PalletsSerializer, \
+    OutputSerializer, LotSummarySerializer, RegisterOutputSerializer, SummaryOutputSerializer
 from apps.management.models import Location
-from apps.operations_and_planning.models import Records, IndicatorKPIPineapple, IndicatorKPIMango, IndicatorKPIAguaymanto
+from apps.operations_and_planning.models import Records
 from apps.production.models import ProcessPineapple, MOD, ProcessBanano
 from apps.quality_assurance.models import Pineapple, Banano, Mango, Blueberry, Goldenberry, StatusLot
 from apps.util.pagination import SetPagination
@@ -70,32 +71,14 @@ class ListCreateLotView(APIView):
             lot = serializer.save()
             if lot.product.name == 'Piña':
                 Pineapple.objects.create(lot=lot)
-                try:
-                    i, created = IndicatorKPIPineapple.objects.get_or_create(date=lot.entry_date)
-                    i.lots.add(lot)
-                    i.save()
-                except:
-                    pass
             elif lot.product.name == 'Plátano':
                 Banano.objects.create(lot=lot)
             elif lot.product.name == 'Mango':
                 Mango.objects.create(lot=lot)
-                try:
-                    i, created = IndicatorKPIMango.objects.get_or_create(date=lot.entry_date)
-                    i.lots.add(lot)
-                    i.save()
-                except:
-                    pass
             elif lot.product.name == "Arándano":
                 Blueberry.objects.create(lot=lot)
             elif lot.product.name == "Aguaymanto":
                 Goldenberry.objects.create(lot=lot)
-                try:
-                    i, created = IndicatorKPIAguaymanto.objects.get_or_create(date=lot.entry_date)
-                    i.lots.add(lot)
-                    i.save()
-                except:
-                    pass
             else:
                 pass
             try:

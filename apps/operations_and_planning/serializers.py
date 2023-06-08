@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Records, IndicatorKPIMango, IndicatorKPIAguaymanto, IndicatorKPIPineapple, IndicatorKPI
+from .models import Records
 from ..logistic.models import Lot
 from ..logistic.serializers import LotSerializer
 
@@ -26,40 +26,3 @@ class LotCustomSerializer(serializers.ModelSerializer):
         model = Lot
         fields = ('lot', 'get_total_net_weight',)
 
-
-class Indicator(serializers.ModelSerializer):
-    year = serializers.CharField(source='get_year', read_only=True)
-    month = serializers.CharField(source='get_month', read_only=True)
-    week = serializers.CharField(source='get_week', read_only=True)
-    entry = serializers.CharField(source='get_entry_real', read_only=True)
-    compliance = serializers.CharField(source='get_compliance_entry', read_only=True)
-    price = serializers.CharField(source='get_price', read_only=True)
-    lots = LotCustomSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = IndicatorKPI
-        fields = '__all__'
-
-
-class KPIPineappleSerializer(Indicator):
-    info = serializers.DictField(source='get_information', read_only=True)
-
-    class Meta:
-        model = IndicatorKPIPineapple
-        fields = '__all__'
-
-
-class KPIMangoSerializer(Indicator):
-    info = serializers.DictField(source='get_information', read_only=True)
-
-    class Meta:
-        model = IndicatorKPIMango
-        fields = '__all__'
-
-
-class KPIGoldenberrySerializer(Indicator):
-    info = serializers.DictField(source='get_information', read_only=True)
-
-    class Meta:
-        model = IndicatorKPIAguaymanto
-        fields = '__all__'

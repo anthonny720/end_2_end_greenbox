@@ -8,7 +8,7 @@ import {useDispatch} from "react-redux";
 import {update_records_mp} from "../../../redux/actions/operations";
 
 
-const Form = ({close, data, category,params}) => {
+const Form = ({close, data, category, params}) => {
 
     const dispatch = useDispatch()
     const columns = [
@@ -38,7 +38,6 @@ const Form = ({close, data, category,params}) => {
                            value={`${formik.values[column.name]}`}
                            onChange={text => formik.setFieldValue(column.name, text.target.value)}/>
                 </div>))}
-
 
 
                 <div className="w-full flex justify-center">

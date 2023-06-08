@@ -9,7 +9,6 @@ import {
     faBoxesPacking,
     faBrain,
     faBusAlt,
-    faChartBar,
     faCity,
     faCoins,
     faCompass,
@@ -102,7 +101,6 @@ const Sidebar = () => {
         icon: faBrain,
         margin: false,
         submenus: [{name: "Pedidos", link: "/operations/orders", icon: faCookieBite},
-            {name: "KPI", link: "/operations/kpi", icon: faChartBar},
         ]
     }, {
         name: "Finanzas",
