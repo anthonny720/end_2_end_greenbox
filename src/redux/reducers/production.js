@@ -8,7 +8,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-    process: null, mod: null, summary_mod: null
+    process: null, mod: null
 }
 
 export default function Production(state = initialState, action) {
@@ -25,11 +25,11 @@ export default function Production(state = initialState, action) {
             }
         case GET_MOD_SUCCESS:
             return {
-                ...state, mod: payload.data, summary_mod: payload.summary
+                ...state, mod: payload.data,
             }
         case GET_MOD_FAIL:
             return {
-                ...state, mod: null, summary_mod: null
+                ...state, mod: null
             }
         case UPDATE_MOD_SUCCESS:
         case UPDATE_MOD_FAIL:

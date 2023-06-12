@@ -50,7 +50,7 @@ export const update_process = (id, product, form, params) => async dispatch => {
             dispatch({
                 type: UPDATE_PROCESS_SUCCESS, payload: res.data
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Información de proceso actualizado', 'success'));
             dispatch(get_process(product, params));
         } else {
             dispatch({
@@ -61,7 +61,7 @@ export const update_process = (id, product, form, params) => async dispatch => {
         dispatch({
             type: UPDATE_PROCESS_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar el proceso', 'error'));
 
     }
 };
@@ -103,7 +103,7 @@ export const update_mod = (id, product, form, params) => async dispatch => {
             dispatch({
                 type: UPDATE_MOD_SUCCESS, payload: res.data
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('MOD actualizado', 'success'));
             dispatch(get_mod(product, params));
         } else {
             dispatch({
@@ -114,7 +114,7 @@ export const update_mod = (id, product, form, params) => async dispatch => {
         dispatch({
             type: GET_MOD_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar la información MOD', 'error'));
 
     }
 };

@@ -1,28 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useFormik} from "formik";
 import {useDispatch} from "react-redux";
-import {enGB} from "date-fns/locale";
-import {DateRangePicker} from "react-nice-dates";
 import {map} from "lodash";
 import {DownloadTableExcel} from "react-export-table-to-excel";
+import RangeDate from "../util/RangeDate";
 
-const   Filter = ({providers, action, category, setParams, reference}) => {
+const Filter = ({providers, action, category, setParams, reference}) => {
     const dispatch = useDispatch()
+
+    const [date, setDate] = useState();
     /*Formik*/
     const formik = useFormik({
         initialValues: initialValues(), validateOnChange: true, onSubmit: (form) => {
+            form['start_date'] = date ? new Date(date?.[0]).toLocaleDateString('es-PE', {timeZone: 'America/Lima'}) : ''
+            form['end_date'] = date ? new Date(date?.[1]).toLocaleDateString('es-PE', {timeZone: 'America/Lima'}) : ''
             setParams(form)
             dispatch(action(category, form))
         }
     })
     return (<form className="w-full  rounded-lg bg-white text-black z-20 my-2">
 
-        <div className="flex items-center justify-between mt-4">
-            <p className="font-medium">
-                Filtros
-            </p>
-
-            <div className={"flex  items-center md:gap-2"}>
+        <div className="flex items-center justify-end mt-4">
+            <div className={"flex  items-center gap-2"}>
                 <DownloadTableExcel
                     filename={`Reporte ${category}`}
                     sheet="Reporte"
@@ -53,48 +52,24 @@ const   Filter = ({providers, action, category, setParams, reference}) => {
 
                 <select value={formik.values.provider}
                         onChange={(value) => formik.setFieldValue('provider', value.target.value)}
-                        className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm">
+                        className="px-4 py-3 w-full rounded-md bg-gray-100  focus:border-green-500 focus:bg-white focus:ring-2 text-sm">
                     <option value={''}>Todos los proveedores</option>
                     {providers && map(providers, (provider, index) => {
                         return <option key={index} value={provider.id}>{provider.business_name}</option>
                     })}
                 </select>
                 <input type={'text'} value={formik.values.lot}
-                        onChange={(value) => formik.setFieldValue('lot', value.target.value)}
+                       onChange={(value) => formik.setFieldValue('lot', value.target.value)}
                        placeholder={'Lote'}
-                        className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm"/>
-                <DateRangePicker
-                    startDate={formik.values.start_date}
-                    endDate={formik.values.end_date}
-                    onStartDateChange={date => formik.setFieldValue('start_date', date)}
-                    onEndDateChange={date => formik.setFieldValue('end_date', date)}
-                    minimumLength={1}
-                    format='yyyy-MM-dd'
-                    locale={enGB}
-
-                >
-                    {({startDateInputProps, endDateInputProps, focus}) => (<div
-                        className='date-range text-gray-400 w-full md:w-max rounded-lg flex  space-x-1 items-center lg:flex-row flex-col space-y-1  '>
-                        <input
-                            className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm text-black"
-                            {...startDateInputProps}
-                            placeholder='Fecha de inicio'
-                        />
-                        <span className='date-range_arrow'/>
-                        <input
-                            className="px-4 py-3 w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-sm text-black"
-                            {...endDateInputProps}
-                            placeholder='Fecha de fin'
-                        />
-                    </div>)}
-                </DateRangePicker>
+                       className="px-4 py-3 w-full rounded-md bg-gray-100 focus:border-green-500 focus:bg-white focus:ring-2 text-sm"/>
+                <RangeDate value={date} onChange={setDate}/>
             </div>
         </div>
     </form>);
 };
 const initialValues = () => {
     return {
-        start_date: "", end_date: "", provider: "",lot:""
+        start_date: "", end_date: "", provider: "", lot: ""
     }
 }
 

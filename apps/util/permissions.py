@@ -6,6 +6,17 @@ from rest_framework.response import Response
 UserAccount = get_user_model()
 
 
+class PlanificationEditorPermission(BasePermission):
+    message = "No tiene permisos para realizar esta acción"
+
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:
+            return request.user.is_authenticated
+        else:
+            return request.user.is_authenticated and request.user.role == UserAccount.Roles.PLANIFICACION and request.user.permissions == UserAccount.Permissions.EDITOR
+
+    def handle_no_permission(self, request):
+        return Response({'error': self.message}, status=status.HTTP_403_FORBIDDEN)
 class OperationsEditorPermission(BasePermission):
     message = "No tiene permisos para realizar esta acción"
 

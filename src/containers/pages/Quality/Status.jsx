@@ -43,7 +43,7 @@ const Status = () => {
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <SummaryStatus data={status ? status : []}/>
             <div className={"bg-white w-full rounded-lg p-4 mt-2"}>
-                <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>Liberación
+                <h1 className={"text-black font-bold text-start  pt-4 text-xl md:text-2xl overflow-scroll scrollbar-hide"}>Liberación
                     de producto</h1>
                 <Filter reference={tableRef} latestObject={latestObject} products={products} setParams={setParams}
                         action={get_status}/>

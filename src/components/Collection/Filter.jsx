@@ -17,12 +17,8 @@ const Filter = ({products, providers, setParams, action, latestObject, reference
     })
     return (<form className="w-full  rounded-lg bg-white text-black">
 
-        <div className="flex items-center justify-between mt-4">
-            <p className="font-medium">
-                Filtros
-            </p>
-
-            <div className={"flex items-center gap-2 "}>
+        <div className="flex items-center justify-end mt-4">
+            <div className={"flex items-center gap-2"}>
                 <DownloadTableExcel
                     filename={`Lista de agricultores : ${new Date(latestObject?.updated_at).toLocaleDateString('es-PE', {
                         day: "numeric", month: "numeric", year: "numeric", hour: "numeric", minute: "numeric"

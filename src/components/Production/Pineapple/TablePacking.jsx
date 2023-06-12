@@ -7,7 +7,7 @@ const TablePacking = ({update, reference}) => {
     const data = useSelector(state => state.Production.process)
 
 
-    const columns = ['Lote', 'Semana', 'Fecha', 'Kg procesados', 'Kg Total', 'Lote 1/8', 'Kg 1/8', '% Rend', 'Lote 1/16', 'Kg 1/16', '% Rend', 'Lote rings', 'Kg rings', '% Rend', 'Kg recuperable', 'Venta local', 'Calidad', '% Rendimiento pagado', '% Rendimiento neto']
+    const columns = ['Lote', 'Semana', 'Fecha', 'Kg procesados', 'Kg Total', 'Lote 1/4', 'Kg 1/4', '% Rend', 'Lote 1/8', 'Kg 1/8', '% Rend', 'Lote 1/16', 'Kg 1/16', '% Rend', 'Lote rings', 'Kg rings', '% Rend', 'Kg recuperable', 'Venta local', 'Calidad', '% Rendimiento pagado', '% Rendimiento neto']
 
 
     return (<div className="w-full">
@@ -35,7 +35,11 @@ const TablePacking = ({update, reference}) => {
                                 {item?.lot}
                             </td>
                             <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{item?.week}</td>
-                            <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{item?.date}</td>
+                            <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">
+                                {new Date(item?.date).toLocaleDateString('es-PE', {
+                                    year: "numeric", month: "numeric", day: "numeric", timeZone: "America/Lima"
+                                })}
+                            </td>
                             <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-bold leading-4 text-center ">
                                 <p className={"bg-green-400 bg-opacity-60 rounded-lg w-full p-2"}>
                                     {Humanize.formatNumber(item?.paid_kg, 2)}
@@ -45,6 +49,9 @@ const TablePacking = ({update, reference}) => {
                                 <p className={"bg-blue-400 bg-opacity-60 rounded-lg w-full p-2"}>
                                     {Humanize.formatNumber(item?.total_pt, 2)}</p>
                             </td>
+                            <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-bold leading-4 text-center ">{item?.lot_cut_1_4}</td>
+                            <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-bold leading-4 text-center ">{Humanize.formatNumber(item?.pt_cut_1_4, 2)}</td>
+                            <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.performance_1_4, 2)}</td>
 
                             <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-bold leading-4 text-center ">{item?.lot_cut_1_8}</td>
                             <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-bold leading-4 text-center ">{Humanize.formatNumber(item?.pt_cut_1_8, 2)}</td>

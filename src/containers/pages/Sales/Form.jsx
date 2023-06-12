@@ -24,8 +24,11 @@ const Form = () => {
     }, {name: 'applicant', title: 'Solicitante', type: 'text', maxLength: 50,}, {
         name: 'code', title: 'Código', type: 'text', maxLength: 50,
     }, {name: 'client', title: 'Cliente', type: 'text', maxLength: 150,}, {
-        name: 'analysis', title: 'Análisis', type: 'text', maxLength: 50,
-    }, {
+        name: 'use',
+        title: 'Uso previsto',
+        type: 'text',
+        maxLength: 50,
+    }, {name: 'analysis', title: 'Análisis', type: 'text', maxLength: 50,}, {
         name: 'delivery_address', title: 'Dirección de entrega', type: 'text', maxLength: 100,
     }, {
         name: 'delivery_address_final', title: 'Dirección de entrega final', type: 'text', maxLength: 100,
@@ -130,6 +133,7 @@ const initialValues = () => {
         price: 0,
         comments: '',
         courier: '',
+        use: '',
     }
 
 }
@@ -150,6 +154,7 @@ const newSchema = () => {
         price: Yup.number().required(),
         comments: Yup.string().required(),
         courier: Yup.string().required(),
+        use: Yup.string().required(),
     }
 }
 

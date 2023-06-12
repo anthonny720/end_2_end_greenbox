@@ -5,30 +5,30 @@ import Layout from "../../../hocs/Layout";
 import Modal from "../../../components/util/Modal";
 import TableCosts from "../../../components/Finance/Table";
 import {Helmet} from "react-helmet";
-import Filter from "../../../components/util/Filter";
 import {get_costs} from "../../../redux/actions/finances";
 import ModalHook from "../../../components/util/hooks";
 import FormUpdateCosts from "../../../components/Finance/FormUpdateCosts";
 import {ReportToPrint} from "../../../components/Finance/ReportCosts";
 import {DownloadTableExcel} from "react-export-table-to-excel";
+import RangeDate from "../../../components/util/RangeDate";
 
 
 const Costs = () => {
     const tableRef = useRef(null);
     const dispatch = useDispatch();
     const costs = useSelector(state => state.Finances.costs);
-    const [params, setParams] = useState({'start_date': '', 'end_date': ''});
+    const [params, setParams] = useState();
 
     const {content, setContent, isOpen, setIsOpen, openModal} = ModalHook();
 
     useEffect(() => {
-        dispatch(get_costs())
-    }, []);
+        const data = {
+            'date_start': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+            'date_end': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+        }
+        dispatch(get_costs(data))
+    }, [params]);
 
-    const handleFilter = (start_date, end_date) => {
-        dispatch(get_costs(start_date, end_date))
-        setParams({'startDate': start_date, 'endDate': end_date})
-    }
 
     const handleOpenViewer = (row) => {
         setIsOpen(true)
@@ -52,16 +52,17 @@ const Costs = () => {
 
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <div className={"bg-white w-full rounded-lg p-4 mt-2 relative"}>
-                <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide "}>COSTOS
+                <h1 className={"text-black font-bold text-start  pt-4 text-xl md:text-2xl "}>COSTOS
                     DIARIOS</h1>
-                <Filter action={handleFilter}/>
+                <RangeDate value={params} onChange={setParams}/>
                 <DownloadTableExcel
-                    filename={`Reporte de costos ${params?.startDate} - ${params?.endDate}`}
+                    filename={`Reporte de costos ${params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : ''} - ${params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : ''}`}
                     sheet="Reporte"
                     currentTableRef={tableRef.current}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg"
-                         className="text-white bg-green-400 bg-opacity-60 rounded-lg cursor-pointer absolute z-10 -top-2 -right-2 h-8 w-8 flex items-center justify-center" width={25}
+                         className="text-white bg-green-400 bg-opacity-60 rounded-lg cursor-pointer absolute z-10 -top-2 -right-2 h-8 w-8 flex items-center justify-center"
+                         width={25}
                          height={25}
                          viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none"
                          strokeLinecap="round" strokeLinejoin="round">
@@ -70,7 +71,8 @@ const Costs = () => {
                     </svg>
 
                 </DownloadTableExcel>
-                <TableCosts reference={tableRef} data={costs ? costs : []} update={handleOpenUpdateCostsData} viewer={handleOpenViewer}/>
+                <TableCosts reference={tableRef} data={costs ? costs : []} update={handleOpenUpdateCostsData}
+                            viewer={handleOpenViewer}/>
             </div>
         </div>
 

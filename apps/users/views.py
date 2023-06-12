@@ -52,7 +52,7 @@ class UpdateUserAPIView(APIView):
         try:
             user.first_name = request.data['first_name']
             user.last_name = request.data['last_name']
-            user.last_name = request.data['last_name']
+            user.email = request.data['email']
             user.role = request.data['role']
             user.permissions = request.data['permissions']
             if request.data['password'] != '':

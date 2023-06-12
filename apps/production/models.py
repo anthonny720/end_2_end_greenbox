@@ -286,6 +286,7 @@ class MOD(models.Model):
     class Meta:
         verbose_name = 'MOD'
         verbose_name_plural = 'MOD'
+        ordering = ['-date']
 
     def __str__(self):
         return str(self.date)

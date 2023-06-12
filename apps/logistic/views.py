@@ -28,9 +28,8 @@ class ListPalletsView(APIView):
             serializer = PalletsSerializer(queryset, many=True)
             return Response({"data": serializer.data}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, )
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Create your views here.
@@ -93,9 +92,8 @@ class ListCreateLotView(APIView):
                 pass
             return Response({"message": "Lote creado correctamente"}, status=status.HTTP_201_CREATED, )
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                "detail": str(e), }, status=status.HTTP_500_INTERNAL_SERVER_ERROR, )
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class DetailLotView(APIView):
@@ -118,7 +116,7 @@ class ListCreateILotView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None, *args, **kwargs):
         data = request.data
@@ -138,9 +136,8 @@ class ListCreateILotView(APIView):
             serializer.save()
             return Response({'message': 'Item agregado correctamente'}, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([RawMaterialEditorPermission])
@@ -159,9 +156,8 @@ class UpdateILotView(APIView):
             inf.delete()
             return Response({"message": "Item eliminado correctamente"}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def patch(self, request, *args, **kwargs):
         lot = kwargs['lot']
@@ -185,15 +181,21 @@ class UpdateILotView(APIView):
 class ListCreateMotionsView(APIView):
     def get(self, request):
         try:
-            samples = Motions.objects.all()
-            serializer = MotionsSerializer(samples, many=True)
+            queryset = Motions.objects.all()
+            date_start = request.query_params.get('date_start', None)
+            date_end = request.query_params.get('date_end', None)
+            if date_start and date_end:
+                queryset = queryset.filter(date__range=[date_start, date_end])
+            else:
+                queryset = queryset.filter(date__range=[datetime.now().date(), datetime.now().date()])
+            serializer = MotionsSerializer(queryset, many=True)
             return Response({'data': serializer.data}, status=status.HTTP_200_OK)
         except DatabaseError as e:
             error_message = 'No se puede procesar su solicitud debido a un error de base de datos. Por favor, inténtelo de nuevo más tarde.'
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         origin_id = request.data.get('origin')
@@ -245,7 +247,7 @@ class ListLotStockView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([RawMaterialEditorPermission])
@@ -253,10 +255,10 @@ class ListCreateOutputView(APIView):
     def get(self, request):
         try:
             queryset = Output.objects.all()
-            date_start = request.query_params.get('startDate', None)
-            date_end = request.query_params.get('endDate', None)
+            date_start = request.query_params.get('date_start', None)
+            date_end = request.query_params.get('date_end', None)
             if date_start and date_end:
-                queryset = queryset.filter(date__range=[date_start[:10], date_end[:10]])
+                queryset = queryset.filter(date__range=[date_start, date_end])
             else:
                 queryset = queryset.filter(date__range=[datetime.now().date(), datetime.now().date()])
 
@@ -267,7 +269,7 @@ class ListCreateOutputView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request):
         lot_id = request.data.get('lot_id')
@@ -324,9 +326,8 @@ class ListCreateOutputView(APIView):
             else:
                 pass
         except Exception as e:
-            return Response({
-                'error': 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.',
-                'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([RawMaterialEditorPermission])
@@ -348,9 +349,8 @@ class DeleteOutputView(APIView):
             else:
                 pass
         except Exception as e:
-            return Response({
-                'error': 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class AddOutputItemsView(APIView):
@@ -362,9 +362,8 @@ class AddOutputItemsView(APIView):
             serializer.save()
             return Response({'message': 'Salida registrada correctamente'}, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, )
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListOutputItemsView(APIView):
@@ -379,6 +378,5 @@ class ListOutputItemsView(APIView):
 
             return Response({"data": serializer.data, 'summary': summary_serializer.data}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({
-                "error": "Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.",
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR, )
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

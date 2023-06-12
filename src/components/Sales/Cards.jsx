@@ -59,7 +59,7 @@ const Cards = ({view, data, filter}) => {
                         <option value="A">Solicitud recepcionada y validada</option>
                         <option value="DP">Entrega producción/calidad</option>
                         <option value="WD">Entrega almacén</option>
-                        <option value="ST">Enviado a Tarma</option>
+                        <option value="ST">Enviado desde Tarma</option>
                         <option value="RL">Recibido en Lima</option>
                         <option value="SC">Programar courier</option>
                         <option value="STC">Enviado al cliente</option>
@@ -78,7 +78,7 @@ const Cards = ({view, data, filter}) => {
                 <div
                     className={"text-black  rounded-lg text-xs  hover:bg-gray-200 hover:bg-opacity-20 hover:text-red-500 p-1"}>
                     <p>
-                        {(data?.status === "A" || data?.status === 'DP' || data?.status === 'WD') && getTimeDifference(data?.delivery_date)}
+                        {(data?.status === "A" || data?.status === 'DP' || data?.status === 'WD') && getTimeDifference(new Date(data?.delivery_date + "T00:00:00-05:00"))}
                         {(data?.status === "ST" || data?.status === 'RL' || data?.status === 'SC') && 'En ruta'}
                         {data?.status === "STC" && 'Entregado'}
 

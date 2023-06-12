@@ -45,6 +45,7 @@ class Samples(models.Model):
     courier = models.CharField(max_length=50, verbose_name='Courier')
     status = models.CharField(max_length=19, choices=Status.choices, verbose_name='Estado', default=Status.ACCEPTED)
     drive = models.URLField(max_length=50, verbose_name='Código', blank=True, null=True)
+    user = models.CharField(max_length=50, verbose_name='Usuario', blank=True, null=True)
     updated = models.DateTimeField(auto_now=True)
     history = HistoricalRecords()
 

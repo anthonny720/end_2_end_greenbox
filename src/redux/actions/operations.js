@@ -46,7 +46,7 @@ export const update_records_mp = (id, form, category, params) => async dispatch 
             dispatch({
                 type: UPDATE_RECORD_MP_SUCCESS, payload: res.data
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Lote actualizado', 'success'));
             dispatch(get_records_mp(category, params));
         } else {
             dispatch({
@@ -57,7 +57,7 @@ export const update_records_mp = (id, form, category, params) => async dispatch 
         dispatch({
             type: UPDATE_RECORD_MP_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar el lote', 'error'));
 
     }
 }

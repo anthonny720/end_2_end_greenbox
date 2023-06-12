@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../../hocs/Layout";
 import Summary from "../../../components/Logistic/Motions/Summary";
 import TableMotions from "../../../components/Logistic/Motions/Table";
-import Filter from "../../../components/util/Filter";
 import {useDispatch, useSelector} from "react-redux";
 import {delete_motion_boxes, get_motion_boxes} from "../../../redux/actions/logistic";
 import motionLogistic from "../../../assets/delivery-service.svg";
@@ -10,6 +9,7 @@ import {MySwal} from "../../../components/util/colors";
 import FormMotion from "../../../components/Logistic/Motions/Form";
 import ModalHook from "../../../components/util/hooks";
 import Modal from "../../../components/util/Modal";
+import RangeDate from "../../../components/util/RangeDate";
 
 const Motions = () => {
     const dispatch = useDispatch();
@@ -17,14 +17,17 @@ const Motions = () => {
     const motion = useSelector(state => state.Logistic.motion)
     const location = useSelector(state => state.Management.locations)
 
+    const [params, setParams] = useState()
+
     useEffect(() => {
-        dispatch(get_motion_boxes())
-    }, []);
+        const data = {
+            'date_start': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+            'date_end': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+        }
+        dispatch(get_motion_boxes(data))
+    }, [params]);
 
 
-    const handleFilter = (value) => {
-        dispatch(get_motion_boxes(value))
-    }
     const handleAddForm = () => {
         setIsOpen(true)
         setContent(<div className={"h-full md:h-screen"}>
@@ -33,10 +36,9 @@ const Motions = () => {
     }
 
 
-
     const handleDelete = (id) => {
         MySwal.fire({
-            title: '¿Desea eliminar este movimiento?', icon: 'warning', showCancelButton: true,
+            title: '¿Desea eliminar este registro?', icon: 'warning', showCancelButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
                 dispatch(delete_motion_boxes(id))
@@ -61,7 +63,8 @@ const Motions = () => {
 
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <div className={"bg-white w-full rounded-lg p-4 mt-2 relative"}>
-                <Filter action={handleFilter}/>
+                <RangeDate value={params} onChange={setParams}/>
+
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => handleAddForm()}
                      className="text-white bg-green-400 bg-opacity-60 rounded-lg cursor-pointer absolute z-10 -top-2 -right-2 h-8 w-8 flex items-center justify-center"
                      width={28} height={28} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"

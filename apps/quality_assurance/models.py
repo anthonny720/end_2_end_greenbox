@@ -40,7 +40,7 @@ class Pineapple(models.Model):
 
     def get_maturation_total(self):
         try:
-            return self.maturation_0_plant + self.maturation_1_plant + self.maturation_2_plant + self.maturation_3_plant + self.maturation_5_plant + self.maturation_5_plant
+            return self.maturation_0_plant + self.maturation_1_plant + self.maturation_2_plant + self.maturation_3_plant + self.maturation_4_plant + self.maturation_5_plant
         except:
             return 0
 

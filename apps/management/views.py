@@ -24,7 +24,7 @@ class ListClientsView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListProviderPackingView(APIView):
@@ -41,7 +41,7 @@ class ListProviderPackingView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListSuppliersMaquilaView(APIView):
@@ -58,7 +58,7 @@ class ListSuppliersMaquilaView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListProviderTransportView(APIView):
@@ -75,7 +75,7 @@ class ListProviderTransportView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListZoneView(APIView):
@@ -89,7 +89,7 @@ class ListZoneView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListLocationView(APIView):
@@ -103,4 +103,4 @@ class ListLocationView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

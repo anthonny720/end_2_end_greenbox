@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 
 from apps.operations_and_planning.serializers import RecordsSerializer
 from .models import (Records)
-from ..util.permissions import OperationsEditorPermission, LogisticsEditorPermission
+from ..util.permissions import OperationsEditorPermission, LogisticsEditorPermission, PlanificationEditorPermission
 
 months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
@@ -62,13 +62,12 @@ class ListRecordsView(APIView):
             results = serializer.data
             return Response({'data': results, 'summary': report}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({
-                'error': 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.',
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UpdateRecordView(APIView):
-    permission_classes = [OperationsEditorPermission | LogisticsEditorPermission]
+    permission_classes = [PlanificationEditorPermission | LogisticsEditorPermission]
 
     def patch(self, request, id, format=None):
         try:
@@ -78,8 +77,7 @@ class UpdateRecordView(APIView):
             serializer.save()
             return Response({'message': 'Registro actualizado correctamente.'})
         except Exception as e:
-            return Response({
-                'error': 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.',
-                'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

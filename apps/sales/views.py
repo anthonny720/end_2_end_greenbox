@@ -9,7 +9,8 @@ from rest_framework.views import APIView
 
 from apps.sales.models import Samples
 from apps.sales.serializers import SamplesSerializer
-from apps.util.permissions import CommercialEditorPermission, LogisticsEditorPermission, OperationsEditorPermission
+from apps.util.permissions import CommercialEditorPermission, LogisticsEditorPermission, OperationsEditorPermission, \
+    PlanificationEditorPermission
 
 
 # Create your views here.
@@ -34,7 +35,7 @@ class ListSamplesView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([AllowAny])
@@ -53,7 +54,7 @@ class CreateSampleView(APIView):
             return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@permission_classes([CommercialEditorPermission | LogisticsEditorPermission | OperationsEditorPermission])
+@permission_classes([CommercialEditorPermission | LogisticsEditorPermission | PlanificationEditorPermission])
 class UpdateSampleView(APIView):
 
     def patch(self, request, pk):
@@ -82,4 +83,4 @@ class ListDatePendingView(APIView):
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
-            return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

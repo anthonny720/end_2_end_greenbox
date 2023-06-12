@@ -1,46 +1,27 @@
 import React, {useState} from 'react';
-import {enGB} from 'date-fns/locale'
 import 'react-nice-dates/build/style.css'
-import {DateRangePicker} from "react-nice-dates";
-import {PaperAirplaneIcon} from "@heroicons/react/24/solid";
+import RangeDate from "../util/RangeDate";
 
 const Filter = ({action}) => {
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
+    const [date, setDate] = useState()
     const [client, setClient] = useState()
-    return (<DateRangePicker
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={setStartDate}
-        onEndDateChange={setEndDate}
-        minimumLength={1}
-        format='yyyy-MM-dd'
-        locale={enGB}
-
-    >
-        {({startDateInputProps, endDateInputProps, focus}) => (<div
-            className='date-range text-gray-400 w-full md:w-max   rounded-lg flex  space-x-1 items-center sm:flex-row flex-col space-y-1 mt-2 '>
-            <input
-                className={'text-black w-full focus:border-blue-300 p-3 border border-gray-300 rounded-lg outline-none focus:bg-gray-50 font-light text-xs'}
-                placeholder='Cliente'
-                value={client}
-                onChange={(e) => setClient(e.target.value)}
-            />
-            <input
-                className={'text-black w-full focus:border-blue-300 p-3 border border-gray-300 rounded-lg outline-none focus:bg-gray-50 font-light text-xs' + (focus === "START_DATE" ? ' -focused' : '')}
-                {...startDateInputProps}
-                placeholder='Fecha de inicio'
-            />
-            <span className='date-range_arrow'/>
-            <input
-                className={'text-black w-full focus:border-blue-300 p-3  border border-gray-300 rounded-lg outline-none focus:bg-gray-50 font-light text-xs' + (focus === "END_DATE" ? ' -focused' : '')}
-                {...endDateInputProps}
-                placeholder='Fecha de fin'
-            />
-            <PaperAirplaneIcon onClick={() => action({startDate, endDate, client})}
-                               className={'sm:h-12 sm:w-12 h-6 w-6 text-gray-400 hover:text-blue-400 cursor-pointer'}/>
-        </div>)}
-    </DateRangePicker>);
+    return (<form className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-4 ">
+        <input type={'text'} value={client}
+               onChange={(value) => setClient(value.target.value)}
+               placeholder={'Cliente'}
+               className="px-4 py-3 w-full rounded-md bg-gray-100 focus:border-green-500 focus:bg-white focus:ring-2 text-sm text-black"/>
+        <RangeDate value={date} onChange={setDate}/>
+        <button type={'button'} onClick={() => {
+          const filter = {
+                'client': client,
+                'date_start': date ? new Date(date?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+                'date_end': date ? new Date(date?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+        }
+            action(filter)
+        }}
+                className="px-4 lg:ml-4 py-3 w-full rounded-md bg-green-500 text-sm text-white">Filtrar
+        </button>
+    </form>);
 };
 
 export default Filter;

@@ -72,13 +72,15 @@ const RequestDocument = ({data}) => (<PDFViewer style={{width: "100%", height: "
             }]}>
                 <Field label="Fecha de solicitud"
                        value={new Date(data?.date + "T00:00:00-05:00").toLocaleDateString('es-PE', {
-                           year: "numeric", month: "long", day: "numeric"
+                           year: "numeric", month: "long", day: "numeric", timeZone: "America/Lima"
                        })}/>
-                <Field label="Fecha de entrega(Lima)" value={new Date(data?.delivery_date + "T00:00:00-05:00").toLocaleDateString('es-PE', {
-                                year: "numeric", month: "long", day: "numeric"
-                            })}/>
+                <Field label="Fecha de entrega(Lima)"
+                       value={new Date(data?.delivery_date + "T00:00:00-05:00").toLocaleDateString('es-PE', {
+                           year: "numeric", month: "long", day: "numeric", timeZone: "America/Lima"
+                       })}/>
                 <Field label="Solicitante" value={data?.applicant}/>
                 <Field label="Producto" value={data?.product}/>
+                <Field label="Uso previsto" value={data?.use ? data?.use : ''}/>
                 <Field label="Especificaciones" value={data?.specifications}/>
                 <Field label="Análisis" value={data?.analysis}/>
                 <Field label="Dirección de entrega" value={data?.delivery_address}/>
@@ -88,6 +90,7 @@ const RequestDocument = ({data}) => (<PDFViewer style={{width: "100%", height: "
                 <Field label="Mercado" value={data?.market_name}/>
                 <Field label="Precio" value={`S/. ${data?.price}`}/>
                 <Field label="Courier" value={data?.courier}/>
+
                 <Field label="Comentarios" value={data?.comments}/>
 
             </View>

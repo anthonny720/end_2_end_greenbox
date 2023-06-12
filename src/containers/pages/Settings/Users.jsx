@@ -48,7 +48,7 @@ const Users = () => {
 
             <div className={"bg-white w-full rounded-lg p-4 mt-2"}>
                 <div
-                    className={" w-full rounded-lg h-max p-4 flex flex-col md:flex-row justify-between items-center gap-8"}>
+                    className={" w-full rounded-lg h-max p-4 flex flex-col sm:flex-row justify-between items-center gap-8"}>
                     <h1 className={"text-black font-bold text-start px-16 pt-4 text-2xl"}>Usuarios</h1>
                     <button onClick={handleOpenModalAdd}
                             className={"bg-green-500 bg-opacity-60 text-white rounded-lg px-4 py-2"}>Agregar

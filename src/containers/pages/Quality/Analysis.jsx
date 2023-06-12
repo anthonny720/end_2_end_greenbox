@@ -6,7 +6,6 @@ import TableBlueberry from "../../../components/Quality/TableBlueberry";
 import TablePineapple from "../../../components/Quality/TablePineapple";
 import TableMango from "../../../components/Quality/TableMango";
 import TableBanana from "../../../components/Quality/TableBanana";
-import Filter from "../../../components/util/Filter";
 import TableGoldenberry from "../../../components/Quality/TableGoldenberry";
 import Modal from "../../../components/util/Modal";
 import ModalHook from "../../../components/util/hooks";
@@ -16,13 +15,13 @@ import FormBanana from "../../../components/Quality/FormBanana";
 import FormBlueberry from "../../../components/Quality/FormBlueberry";
 import FormGoldenberry from "../../../components/Quality/FormGoldenberry";
 import {useDispatch} from "react-redux";
-import {get_analysis} from "../../../redux/actions/quality";
 import {DownloadTableExcel} from "react-export-table-to-excel";
+import RangeDate from "../../../components/util/RangeDate";
 
 const Analysis = () => {
     const [activeTable, setActiveTable] = useState("Piña");
     const tableRef = useRef(null);
-    const [params, setParams] = useState({startDate: null, endDate: null});
+    const [params, setParams] = useState();
 
     const {content, setContent, isOpen, setIsOpen, openModal} = ModalHook();
     const dispatch = useDispatch()
@@ -46,13 +45,7 @@ const Analysis = () => {
         </div>)
     }
 
-    const handleFilter = (value) => {
-        const fruits = {
-            Piña: 'pineapple', Mango: 'mango', Banano: 'banano', Arándano: 'blueberry', Aguaymanto: 'goldenberry'
-        };
-        setParams(value)
-        dispatch(get_analysis(fruits[activeTable], value));
-    }
+
     return (<Layout>
         <Helmet>
             <title>Análisis</title>
@@ -64,11 +57,10 @@ const Analysis = () => {
             <div className={"bg-white w-full rounded-lg p-4 mt-2"}>
 
 
-                <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>Análisis
-                    de Materia
-                    Prima</h1>
+                <h1 className={"text-black font-bold text-start  pt-4 text-xl md:text-2xl overflow-scroll scrollbar-hide"}>Análisis
+                    de Materia Prima</h1>
                 <div className={"flex sm:flex-row flex-col items-center justify-between w-full "}>
-                    <Filter action={handleFilter}/>
+                    <RangeDate value={params} onChange={setParams}/>
                     <DownloadTableExcel
                         filename={`Análisis ${activeTable}`}
                         sheet="Reporte"
@@ -86,11 +78,11 @@ const Analysis = () => {
                     </DownloadTableExcel>
                 </div>
 
-                {activeTable === "Piña" && <TablePineapple update={handleUpdateForm} reference={tableRef}/>}
-                {activeTable === "Mango" && <TableMango update={handleUpdateForm} reference={tableRef}/>}
-                {activeTable === "Banano" && <TableBanana update={handleUpdateForm} reference={tableRef}/>}
-                {activeTable === "Arándano" && <TableBlueberry update={handleUpdateForm} reference={tableRef}/>}
-                {activeTable === "Aguaymanto" && <TableGoldenberry update={handleUpdateForm} reference={tableRef}/>}
+                {activeTable === "Piña" && <TablePineapple update={handleUpdateForm} reference={tableRef} params={params}/>}
+                {activeTable === "Mango" && <TableMango update={handleUpdateForm} reference={tableRef} params={params} />}
+                {activeTable === "Banano" && <TableBanana update={handleUpdateForm} reference={tableRef} params={params}/>}
+                {activeTable === "Arándano" && <TableBlueberry update={handleUpdateForm} reference={tableRef} params={params}/>}
+                {activeTable === "Aguaymanto" && <TableGoldenberry update={handleUpdateForm} reference={tableRef} params={params}/>}
 
 
             </div>

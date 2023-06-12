@@ -8,8 +8,7 @@ import Filter from "../../../components/Collection/Filter";
 import Modal from "../../../components/util/Modal";
 import ModalHook from "../../../components/util/hooks";
 import FormParcels from "../../../components/Collection/FormParcels";
-import {maxBy, sumBy} from "lodash";
-import Humanize from "humanize-plus";
+import {maxBy} from "lodash";
 
 
 const Parcels = () => {
@@ -51,8 +50,7 @@ const Parcels = () => {
 
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <div className={"bg-white w-full rounded-lg p-4 mt-2 relative"}>
-                <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>Parcelas:
-                    ({parcels && Humanize.formatNumber(sumBy(parcels, parcel => parseFloat(parcel.area)), 2)} m2)</h1>
+                <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>Parcelas</h1>
                 <svg xmlns="http://www.w3.org/2000/svg" onClick={() => handleAddForm()}
                      className="text-white bg-green-400 bg-opacity-60 rounded-lg cursor-pointer absolute z-10 -top-2 -right-2 h-8 w-8 flex items-center justify-center"
                      width={28} height={28} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"

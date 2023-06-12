@@ -123,7 +123,7 @@ export const update_parcels = (form, id, params) => async dispatch => {
                 type: UPDATE_PARCEL_SUCCESS, payload: res.data
             });
             dispatch(get_parcels(params));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Parcela actualizada', 'success'));
         } else {
             dispatch({
                 type: UPDATE_PARCEL_FAIL
@@ -133,7 +133,7 @@ export const update_parcels = (form, id, params) => async dispatch => {
         dispatch({
             type: UPDATE_PARCEL_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar la parcela', 'error'));
 
     }
 }
@@ -151,7 +151,7 @@ export const add_parcels = (form, params) => async dispatch => {
                 type: ADD_PARCEL_SUCCESS, payload: res.data
             });
             dispatch(get_parcels(params));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Parcela registrada', 'success'));
         } else {
             dispatch({
                 type: ADD_PARCEL_FAIL
@@ -161,7 +161,7 @@ export const add_parcels = (form, params) => async dispatch => {
         dispatch({
             type: ADD_PARCEL_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar la parcela', 'error'));
 
     }
 }

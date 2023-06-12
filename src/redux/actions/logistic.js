@@ -53,7 +53,7 @@ export const add_lot = (form) => async dispatch => {
                 type: ADD_LOT_SUCCESS, payload: res.data
             });
             dispatch(get_lots());
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Lote registrado', 'success'));
         } else {
             dispatch({
                 type: ADD_LOT_FAIL
@@ -63,7 +63,7 @@ export const add_lot = (form) => async dispatch => {
         dispatch({
             type: ADD_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar el lote', 'error'));
     }
 }
 
@@ -178,7 +178,7 @@ export const update_data = (form, lot, id) => async dispatch => {
             });
             dispatch(get_data(lot));
             dispatch(get_lot(lot));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Información actualizada', 'success'));
         } else {
             dispatch({
                 type: UPDATE_DATA_LOT_FAIL
@@ -188,7 +188,7 @@ export const update_data = (form, lot, id) => async dispatch => {
         dispatch({
             type: UPDATE_DATA_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert("Ocurrió un error al actualizar la información", 'error'));
     }
 }
 export const delete_data = (lot, id) => async dispatch => {
@@ -206,7 +206,7 @@ export const delete_data = (lot, id) => async dispatch => {
             });
             dispatch(get_data(lot));
             dispatch(get_lot(lot));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Información eliminada', 'success'));
         } else {
             dispatch({
                 type: DELETE_DATA_LOT_FAIL
@@ -216,7 +216,7 @@ export const delete_data = (lot, id) => async dispatch => {
         dispatch({
             type: DELETE_DATA_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al eliminar la información', 'error'));
     }
 }
 export const add_data = (form, lot) => async dispatch => {
@@ -234,7 +234,7 @@ export const add_data = (form, lot) => async dispatch => {
             });
             dispatch(get_data(lot));
             dispatch(get_lot(lot));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Información registrada', 'success'));
         } else {
             dispatch({
                 type: ADD_DATA_LOT_FAIL
@@ -244,7 +244,7 @@ export const add_data = (form, lot) => async dispatch => {
         dispatch({
             type: ADD_DATA_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar la información', 'error'));
 
     }
 }
@@ -316,7 +316,7 @@ export const add_output_stock = (form) => async dispatch => {
             });
             dispatch(get_output_stock());
             dispatch(get_stock());
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Salida registrada', 'success'));
 
 
         } else {
@@ -328,7 +328,7 @@ export const add_output_stock = (form) => async dispatch => {
         dispatch({
             type: ADD_STOCK_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar la salida', 'error'));
 
     }
 }
@@ -348,7 +348,7 @@ export const delete_output_stock = (id) => async dispatch => {
             });
             dispatch(get_output_stock());
             dispatch(get_stock());
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Salida eliminada', 'success'));
         } else {
             dispatch({
                 type: DELETE_STOCK_LOT_FAIL
@@ -358,7 +358,7 @@ export const delete_output_stock = (id) => async dispatch => {
         dispatch({
             type: DELETE_STOCK_LOT_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al eliminar la salida', 'error'));
 
     }
 }
@@ -404,7 +404,7 @@ export const add_motion_boxes = (form) => async dispatch => {
             dispatch({
                 type: ADD_MOTION_BOX_SUCCESS, payload: res.data
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Movimiento registrado', 'success'));
             dispatch(get_motion_boxes());
         } else {
             dispatch({
@@ -415,7 +415,7 @@ export const add_motion_boxes = (form) => async dispatch => {
         dispatch({
             type: ADD_MOTION_BOX_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar el movimiento', 'error'));
 
     }
 }
@@ -432,7 +432,7 @@ export const delete_motion_boxes = (id) => async dispatch => {
             dispatch({
                 type: DELETE_MOTION_BOX_SUCCESS, payload: res.data
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Movimiento eliminado', 'success'));
             dispatch(get_motion_boxes());
         } else {
             dispatch({
@@ -443,7 +443,7 @@ export const delete_motion_boxes = (id) => async dispatch => {
         dispatch({
             type: DELETE_MOTION_BOX_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al eliminar el movimiento', 'error'));
 
     }
 }
@@ -463,7 +463,7 @@ export const add_output_items = (form,lot) => async dispatch => {
                 type: ADD_OUTPUT_ITEM_SUCCESS, payload: res.data
             });
             dispatch(get_output_items(lot));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Salida registrada', 'success'));
         } else {
             dispatch({
                 type: ADD_OUTPUT_ITEM_FAIL
@@ -473,7 +473,7 @@ export const add_output_items = (form,lot) => async dispatch => {
         dispatch({
             type: ADD_OUTPUT_ITEM_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar la salida', 'error'));
     }
 }
 

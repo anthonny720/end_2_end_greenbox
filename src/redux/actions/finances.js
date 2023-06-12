@@ -46,7 +46,7 @@ export const update_costs = (form, params) => async dispatch => {
             dispatch({
                 type: UPDATE_COSTS_SUCCESS,
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Costo registrado', 'success'));
             dispatch(get_costs(params))
         } else {
             dispatch({
@@ -57,7 +57,7 @@ export const update_costs = (form, params) => async dispatch => {
         dispatch({
             type: UPDATE_COSTS_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar el costo', 'error'));
 
 
     }

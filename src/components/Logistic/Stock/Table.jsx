@@ -32,7 +32,7 @@ const TableStock = ({data, remove}) => {
                             </td>
                             <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 font-light dark:text-gray-100 font-light leading-4 text-center ">
                                 {new Date(item?.date + "T00:00:00-05:00").toLocaleDateString('es-PE', {
-                                    year: "numeric", month: "numeric", day: "numeric"
+                                    year: "numeric", month: "short", day: "numeric"
                                 })}
                             </td>
                             <td className="text-sm pr-6 whitespace-no-wrap text-gray-800 font-bold dark:text-gray-100  leading-4 text-center ">

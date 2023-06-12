@@ -17,7 +17,7 @@ import Form from "./Form";
 const Report = () => {
     const tableRef = useRef(null);
 
-    const [params, setParams] = useState({start_date: '', end_date: '', provider: ''});
+    const [params, setParams] = useState();
     const {content, setContent, isOpen, setIsOpen, openModal} = ModalHook();
     const summary = useSelector(state => state.Operations.summary);
 
@@ -55,7 +55,7 @@ const Report = () => {
                 <Badge data={summary ? summary : []}/>
                 <Filter action={get_records_mp} category={category} setParams={setParams}
                         providers={providers ? providers : []} reference={tableRef.current}/>
-                <TableHistoryMP reference={tableRef} update={handleOpenModalUpdate} data={data ? data : []} />
+                <TableHistoryMP reference={tableRef} update={handleOpenModalUpdate} data={data ? data : []}/>
             </div>
         </div>
 

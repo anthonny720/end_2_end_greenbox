@@ -50,7 +50,7 @@ export const add_samples = (form) => async dispatch => {
             dispatch({
                 type: ADD_SAMPLE_SUCCESS
             });
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Muestra registrada', 'success'));
         } else {
             dispatch({
                 type: ADD_SAMPLE_FAIL
@@ -60,7 +60,7 @@ export const add_samples = (form) => async dispatch => {
         dispatch({
             type: ADD_SAMPLE_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al registrar la muestra', 'error'));
 
     }
 }
@@ -78,7 +78,7 @@ export const update_samples = (form, id, params) => async dispatch => {
                 type: UPDATE_SAMPLE_SUCCESS
             });
             dispatch(get_samples(params));
-            dispatch(setAlert(res.data.message, 'success'));
+            dispatch(setAlert('Muestra actualizada', 'success'));
         } else {
             dispatch({
                 type: UPDATE_SAMPLE_FAIL
@@ -88,7 +88,7 @@ export const update_samples = (form, id, params) => async dispatch => {
         dispatch({
             type: UPDATE_SAMPLE_FAIL
         });
-        dispatch(setAlert(err.response.data['error'], 'error'));
+        dispatch(setAlert('Ocurrió un error al actualizar la muestra', 'error'));
 
     }
 }

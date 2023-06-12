@@ -1,13 +1,13 @@
 from django.db import DatabaseError
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.finances.models import ReportCost, ReportCategory
 from apps.finances.serializers import CostSerializer
-from apps.util.permissions import OperationsEditorPermission, LogisticsEditorPermission, ProductionEditorPermission
+from apps.util.permissions import LogisticsEditorPermission, ProductionEditorPermission, \
+    PlanificationEditorPermission
 
 
 # Create your views here.
@@ -25,13 +25,12 @@ class ListCostAPIView(APIView):
         except DatabaseError as e:
             error_message = 'No se puede procesar su solicitud debido a un error de base de datos. Por favor, inténtelo de nuevo más tarde.'
             return Response({'error': error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
             return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class UpdateCostsAPIView(APIView):
-    permission_classes = [OperationsEditorPermission | LogisticsEditorPermission | ProductionEditorPermission]
+    permission_classes = [PlanificationEditorPermission | LogisticsEditorPermission | ProductionEditorPermission]
 
     def patch(self, request, *args, **kwargs):
         try:

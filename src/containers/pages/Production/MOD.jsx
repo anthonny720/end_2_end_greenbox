@@ -9,7 +9,6 @@ import TableMODPacking from "../../../components/Production/TableMODPacking";
 import Filter from "../../../components/Production/Filter";
 import {get_providers_category} from "../../../redux/actions/collection";
 import TableMODConditioning from "../../../components/Production/TableMOD";
-import SummaryMOD from "../../../components/Production/SummaryMOD";
 import ModalHook from "../../../components/util/hooks";
 import Modal from "../../../components/util/Modal";
 import FormMOD from "../../../components/Production/FormMOD";
@@ -33,11 +32,10 @@ const MOD = () => {
     useEffect(() => {
         dispatch(get_mod(model_name))
         dispatch(get_providers_category(model_name))
-
     }, [model_name]);
 
 
-    const handleOpenModalUpdate = (data,type) => {
+    const handleOpenModalUpdate = (data, type) => {
         setIsOpen(true)
         setContent(<div className={"h-screen"}>
             <FormMOD data={data} close={openModal} params={params} category={model_name} typeform={type}/>
@@ -52,12 +50,11 @@ const MOD = () => {
 
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <Dropdown setSelect={setModel_name}/>
-            <SummaryMOD/>
-
             <div className={"bg-white w-full rounded-lg p-4 mt-2"}>
                 <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>MOD: {model_name}</h1>
-                <Filter providers={providers} setParams={setParams} category={model_name} action={get_mod} reference={tableRef.current}/>
-                <Tabs table1={<TableMODConditioning reference={tableRef} update={handleOpenModalUpdate} />}
+                <Filter providers={providers} setParams={setParams} category={model_name} action={get_mod}
+                        reference={tableRef.current}/>
+                <Tabs table1={<TableMODConditioning reference={tableRef} update={handleOpenModalUpdate}/>}
                       table2={<TableMODPacking reference={tableRef} update={handleOpenModalUpdate}/>}/>
             </div>
         </div>

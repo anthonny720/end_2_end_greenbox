@@ -41,7 +41,9 @@ const Form = ({close, data}) => {
                     value={formik.values.role} className="mt-4 form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     aria-label="Default select example">
-                <option value={"OPERACIONES"}>{"Operaciones"}</option>
+                <option value={"OPERACIONES"}>
+                    {"Operaciones"}
+                </option>
                 <option value={"LOGISTICA"}>{"Logística"}</option>
                 <option value={"CERTIFICACIONES"}>{"Certificaciones"}</option>
                 <option value={"ADMINISTRACION"}>{"Administración"}</option>
@@ -54,6 +56,7 @@ const Form = ({close, data}) => {
                 <option value={"ACOPIO"}>{"Acopio"}</option>
                 <option value={"CONTABILIDAD"}>{"Contabilidad"}</option>
                 <option value={"GERENCIA"}>{"Gerencia"}</option>
+                <option value={"PLANIFICACION"}>{"Planificación"}</option>
                 <option value={"COMERCIAL"}>{"Comercial"}</option>
             </select>
         </div>

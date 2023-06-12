@@ -47,11 +47,11 @@ class AnalysisListView(ListAPIView):
     def list(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset()
-            date_start = request.query_params.get('startDate', None)
-            date_end = request.query_params.get('endDate', None)
+            date_start = request.query_params.get('start_date', None)
+            date_end = request.query_params.get('end_date', None)
             all_data= request.query_params.get('all', None)
             if date_start and date_end:
-                queryset = queryset.filter(lot__entry_date__range=[date_start[:10], date_end[:10]])
+                queryset = queryset.filter(lot__entry_date__range=[date_start, date_end])
             else:
                 if all_data:
                     queryset = queryset.all()
@@ -63,10 +63,8 @@ class AnalysisListView(ListAPIView):
             return Response({'data': serializer.data}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            error_message = f"Se ha producido un error al obtener los registros."
-            detail_message = str(e)
-            return Response({'error': error_message, 'detail': detail_message},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @permission_classes([QualityEditorPermission, ])
@@ -98,10 +96,8 @@ class AnalysisDetailView(RetrieveUpdateAPIView):
             success_message = "Registro actualizado correctamente."
             return Response({'message': success_message}, status=status.HTTP_200_OK)
         except Exception as e:
-            error_message = "Se ha producido un error al actualizar el registro. Vuelva a intentarlo más tarde."
-            detail_message = str(e)
-            return Response({'error': error_message, 'detail': detail_message},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
+            return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ListStatusLotView(APIView):
@@ -132,7 +128,6 @@ class ListStatusLotView(APIView):
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
             return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 @permission_classes([CertificationsEditorPermission, ])
 class UpdateStatusLotView(APIView):

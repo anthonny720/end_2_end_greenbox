@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {filter, map} from "lodash";
 import Filter from "./Filter";
 
-const Board = ({view, data, handleFilter}) => {
+const Board = ({view, data,handleFilter}) => {
     const navigate = useNavigate();
     return (<div className="flex justify-center max-h-screen">
         <div className="w-full max-w-6xl md:mt-10 mt-2 max-h-screen overflow-y-scroll scrollbar-hide">
