@@ -1,5 +1,6 @@
 # Create your views here.
 import random
+from datetime import datetime
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -26,7 +27,8 @@ def get_filtered_query(category, provider, start_date, end_date, all_data):
         queryset = queryset.filter(lot__provider_id=provider)
 
     if start_date and end_date:
-        queryset = queryset.filter(lot__entry_date__range=(start_date[:10], end_date[:10]))
+        queryset = queryset.filter(lot__entry_date__range=[datetime.strptime(start_date, "%d/%m/%Y"),
+                                                      datetime.strptime(end_date, "%d/%m/%Y")])
     else:
         queryset = queryset[:50]
     return queryset

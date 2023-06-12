@@ -182,10 +182,11 @@ class ListCreateMotionsView(APIView):
     def get(self, request):
         try:
             queryset = Motions.objects.all()
-            date_start = request.query_params.get('date_start', None)
-            date_end = request.query_params.get('date_end', None)
+            date_start = request.query_params.get('start_date', None)
+            date_end = request.query_params.get('end_date', None)
             if date_start and date_end:
-                queryset = queryset.filter(date__range=[date_start, date_end])
+                queryset = queryset.filter(date__range=[datetime.strptime(date_start, "%d/%m/%Y"),
+                                                      datetime.strptime(date_end, "%d/%m/%Y")])
             else:
                 queryset = queryset.filter(date__range=[datetime.now().date(), datetime.now().date()])
             serializer = MotionsSerializer(queryset, many=True)
@@ -255,10 +256,11 @@ class ListCreateOutputView(APIView):
     def get(self, request):
         try:
             queryset = Output.objects.all()
-            date_start = request.query_params.get('date_start', None)
-            date_end = request.query_params.get('date_end', None)
+            date_start = request.query_params.get('start_date', None)
+            date_end = request.query_params.get('end_date', None)
             if date_start and date_end:
-                queryset = queryset.filter(date__range=[date_start, date_end])
+                queryset = queryset.filter(date__range=[datetime.strptime(date_start, "%d/%m/%Y"),
+                                                      datetime.strptime(date_end, "%d/%m/%Y")])
             else:
                 queryset = queryset.filter(date__range=[datetime.now().date(), datetime.now().date()])
 

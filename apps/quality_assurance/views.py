@@ -51,7 +51,8 @@ class AnalysisListView(ListAPIView):
             date_end = request.query_params.get('end_date', None)
             all_data= request.query_params.get('all', None)
             if date_start and date_end:
-                queryset = queryset.filter(lot__entry_date__range=[date_start, date_end])
+                queryset = queryset.filter(lot__entry_date__range=[datetime.strptime(date_start, "%d/%m/%Y"),
+                                                      datetime.strptime(date_end, "%d/%m/%Y")])
             else:
                 if all_data:
                     queryset = queryset.all()

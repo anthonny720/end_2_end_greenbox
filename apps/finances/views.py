@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import DatabaseError
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -14,11 +16,13 @@ from apps.util.permissions import LogisticsEditorPermission, ProductionEditorPer
 
 class ListCostAPIView(APIView):
     def get(self, request):
-        startDate = request.query_params.get('startDate', None)
-        endDate = request.query_params.get('endDate', None)
+
+        date_start = request.query_params.get('start_date', None)
+        date_end = request.query_params.get('end_date', None)
         queryset = ReportCost.objects.all().order_by('-date')
-        if startDate and endDate:
-            queryset = queryset.filter(date__range=[startDate[:10], endDate[:10]])
+        if date_start and date_end:
+            queryset = queryset.filter(date__range=[datetime.strptime(date_start, "%d/%m/%Y"),
+                                                      datetime.strptime(date_end, "%d/%m/%Y")])
         try:
             serializer = CostSerializer(queryset, many=True)
             return Response({'data': serializer.data}, status=status.HTTP_200_OK)

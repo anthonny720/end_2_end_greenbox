@@ -27,6 +27,8 @@ class ProcessPineapple(models.Model):
     shell = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Cáscara', blank=True, default=0)
     trunk = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Tronco', blank=True, default=0)
     juice_pulp = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Jugo', blank=True, default=0)
+    lot_cut_1_4 = models.CharField(max_length=50, verbose_name='Lote 1/4', blank=True, null=True)
+    pt_cut_1_4 = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='1/4 ', blank=True, default=0)
     lot_cut_1_8 =models.CharField(max_length=50, verbose_name='Lote 1/8', blank=True, null=True)
     pt_cut_1_8 = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='1/8 ', blank=True, default=0)
     lot_cut_1_16 = models.CharField(max_length=50, verbose_name='Lote 1/16', blank=True, null=True)
@@ -107,7 +109,7 @@ class ProcessPineapple(models.Model):
 
     def get_total_pt(self):
         try:
-            return self.pt_cut_1_8 + self.pt_cut_1_16 + self.pt_cut_rings + self.local + self.pt_cut_recuperable
+            return self.pt_cut_1_8 + self.pt_cut_1_16 + self.pt_cut_rings + self.local + self.pt_cut_recuperable + self.pt_cut_1_4
         except:
             return 0
 
@@ -129,6 +131,12 @@ class ProcessPineapple(models.Model):
         except:
             return 0
 
+    def get_performance_1_4(self):
+        try:
+            return (self.pt_cut_1_4 / decimal.Decimal(self.get_brute_kg_1_4())) * 100
+        except:
+            return 0
+
     def get_performance_1_16(self):
         try:
             return (self.pt_cut_1_16 / decimal.Decimal(self.get_brute_kg_1_16())) * 100
@@ -144,6 +152,12 @@ class ProcessPineapple(models.Model):
     def get_percent_enabled(self):
         try:
             return (self.get_enabled_kg() / self.get_paid_kg()) * 100
+        except:
+            return 0
+
+    def get_brute_kg_1_4(self):
+        try:
+            return (self.enabled_1_4 / self.get_percent_enabled()) * 100
         except:
             return 0
 

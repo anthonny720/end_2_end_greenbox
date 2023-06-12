@@ -21,8 +21,8 @@ const Motions = () => {
 
     useEffect(() => {
         const data = {
-            'date_start': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
-            'date_end': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+            'start_date': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+            'end_date': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
         }
         dispatch(get_motion_boxes(data))
     }, [params]);

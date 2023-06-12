@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework import status
 from rest_framework.decorators import permission_classes
 from rest_framework.generics import ListAPIView, UpdateAPIView
@@ -95,7 +97,8 @@ def get_filtered_query(category, provider=None, start_date=None, end_date=None):
     if provider:
         queryset = queryset.filter(process__lot__provider__id__icontains=provider)
     if start_date and end_date:
-        queryset = queryset.filter(date__range=(start_date, end_date))
+        queryset = queryset.filter(date__range=[datetime.strptime(start_date, "%d/%m/%Y"),
+                                                      datetime.strptime(end_date, "%d/%m/%Y")])
     else:
         queryset = queryset[:50]
     return queryset

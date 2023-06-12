@@ -14,8 +14,8 @@ const Filter = ({action}) => {
         <button type={'button'} onClick={() => {
           const filter = {
                 'client': client,
-                'date_start': date ? new Date(date?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
-                'date_end': date ? new Date(date?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+                'start_date': date ? new Date(date?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+                'end_date': date ? new Date(date?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
         }
             action(filter)
         }}

@@ -18,13 +18,14 @@ class ListSamplesView(APIView):
     def get(self, request):
         try:
             queryset = Samples.objects.all()
-            date_start = request.query_params.get('startDate', None)
-            date_end = request.query_params.get('endDate', None)
+            date_start = request.query_params.get('start_date', None)
+            date_end = request.query_params.get('end_date', None)
             client = request.query_params.get('client', None)
             if client:
                 queryset = queryset.filter(client__icontains=client)
             if date_start and date_end:
-                queryset = queryset.filter(delivery_date__range=[date_start[:10], date_end[:10]])
+                queryset = queryset.filter(delivery_date__range=[datetime.strptime(date_start, "%d/%m/%Y"),
+                                                      datetime.strptime(date_end, "%d/%m/%Y")])
             else:
                 queryset = queryset.filter(delivery_date__year=datetime.now().year)
 
