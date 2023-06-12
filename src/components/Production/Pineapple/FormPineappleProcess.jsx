@@ -12,6 +12,7 @@ const FormProcessPineapple = ({close, data, category, params, typeform}) => {
 
     const dispatch = useDispatch()
     const columns = [
+        {name: 'enabled_1_4', title: 'Habilitado 1/4', type: 'text', maxLength: 8},
         {name: 'enabled_1_8', title: 'Habilitado 1/8', type: 'text', maxLength: 8},
         {name: 'enabled_1_16', title: 'Habilitado 1/16', type: 'text', maxLength: 8},
         {name: 'enabled_rings', title: 'Habilitado rings', type: 'text', maxLength: 8},
@@ -23,6 +24,7 @@ const FormProcessPineapple = ({close, data, category, params, typeform}) => {
 
     ]
     const columns_2 = [
+        {name: 'pt_cut_1_4', title: 'PT 1/4', type: 'text', maxLength: 8},
         {name: 'pt_cut_1_8', title: 'PT 1/8', type: 'text', maxLength: 8},
         {name: 'pt_cut_1_16', title: 'PT 1/16', type: 'text', maxLength: 8},
         {name: 'pt_cut_rings', title: 'PT Rings', type: 'text', maxLength: 8},
@@ -86,6 +88,7 @@ const FormProcessPineapple = ({close, data, category, params, typeform}) => {
 };
 const initialValues = (data) => {
     return {
+        enabled_1_4: data?.enabled_1_4 || 0,
         enabled_1_8: data?.enabled_1_8 || 0,
         enabled_1_16: data?.enabled_1_16 || 0,
         enabled_rings: data?.enabled_rings || 0,
@@ -108,6 +111,7 @@ const initialValues = (data) => {
 }
 const newSchema = () => {
     return {
+        enabled_1_4 : Yup.number().min(0).required(),
         enabled_1_8: Yup.number().min(0).required(),
         enabled_1_16: Yup.number().min(0).required(),
         enabled_rings: Yup.number().min(0).required(),
