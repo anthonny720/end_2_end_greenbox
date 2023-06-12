@@ -7,12 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 # Create your views here.
-from .models import (
-    ProcessPineapple as Piña, MOD, ProcessBanano as Banano
-)
+from .models import (ProcessPineapple as Piña, MOD, ProcessBanano as Banano)
 from .serializers import ProcessPineappleSerializer, MODSerializer, ProcessBananoSerializer
-from ..util.permissions import ProductionEditorPermission, ProductionConditioningEditorPermission, \
-    ProductionPackingEditorPermission
+from ..util.permissions import ProductionEditorPermission, ProductionConditioningEditorPermission, ProductionPackingEditorPermission
 
 
 class ProcessListView(ListAPIView):
@@ -45,7 +42,8 @@ class ProcessListView(ListAPIView):
             if lot:
                 queryset = queryset.filter(stock__lot__lot__icontains=lot)
             if start_date and end_date:
-                queryset = queryset.filter(stock__date__range=(start_date, end_date))
+                queryset = queryset.filter(stock__date__range=[datetime.strptime(start_date, "%d/%m/%Y"),
+                                                      datetime.strptime(end_date, "%d/%m/%Y")])
             elif start_date:
                 queryset = queryset.filter(stock__date__gte=start_date)
             else:
