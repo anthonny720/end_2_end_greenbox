@@ -15,8 +15,8 @@ from apps.management.models import CostProduction
 class ProcessPineapple(models.Model):
     stock = models.ForeignKey(Output, on_delete=models.PROTECT, verbose_name='Stock', related_name='process')
 
-    enabled_1_8 = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Habilitado octavos ', blank=True,
-                                      default=0)
+    enabled_1_4= models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Habilitado cuartos ', blank=True,default=0)
+    enabled_1_8 = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Habilitado octavos ', blank=True,default=0)
     enabled_1_16 = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Habilitado tidbits', blank=True,
                                        default=0)
     enabled_rings = models.DecimalField(max_digits=7, decimal_places=3, verbose_name='Habilitado Rings', blank=True,
