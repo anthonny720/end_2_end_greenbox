@@ -1,14 +1,51 @@
 import React from 'react';
 import Humanize from 'humanize-plus';
+import {sumBy} from "lodash";
 
-const Badge = ({data}) => {
+const Badge = ({data,total}) => {
+    const get_kg_usable = () => {
+        try {
+            return sumBy(data, (o) => {
+                const netWeight = parseFloat(o?.lot?.net_weight);
+                const discount = parseFloat(o?.lot?.discount) / 100;
+                return netWeight * (1 - discount);
+            });
+        } catch (e) {
+            return 0;
+        }
+    };
+
+    const get_total_amount = () => {
+        try {
+            return sumBy(data, (o) => {
+                let kg_usb = parseFloat(o?.lot?.net_weight) * (1 - parseFloat(o?.lot?.discount) / 100)
+                let kg_discount = parseFloat(o?.lot?.net_weight) * (parseFloat(o?.lot?.discount_price) / 100)
+                let kg_usable = (kg_usb - kg_discount) * parseFloat(o?.price_camp)
+                let discount_soles = kg_discount * parseFloat(o?.lot?.discount_price_soles)
+                const price_camp = (kg_usable + discount_soles) / kg_usb
+                return kg_usb * price_camp + parseFloat(o?.freight) / kg_usb
+            });
+
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    const get_price = () => {
+        try {
+            return total / get_kg_usable();
+        } catch (e) {
+            return 0;
+        }
+    }
+
     return (<div className="w-full flex mt-4 flex-wrap gap-2 overflow-auto scrollbar-hide">
 
         <div
             className="flex flex-row justify-between w-full md:w-max m-auto bg-gradient-to-r from-green-400 via-green-500 to-green-600 md:p-4 p-2 gap-8 rounded-lg border-2 border-green-300">
             <div className="my-auto">
                 <div className="md:text-lg text-sm text-green-200">Kg:</div>
-                <div className="md:text-2xl text-xl text-green-100">{Humanize.formatNumber(data?.kg || 0, 2)} kg</div>
+                <div className="md:text-2xl text-xl text-green-100">{Humanize.formatNumber(get_kg_usable(), 2)} kg</div>
             </div>
             <div
                 className="hidden sm:block text-green-300 my-auto bg-gradient-to-l from-green-700 via-green-800 to-green-900 rounded-full p-4">
@@ -22,7 +59,7 @@ const Badge = ({data}) => {
             className="flex flex-row justify-between w-full md:w-max m-auto bg-gradient-to-r from-green-400 via-green-500 to-green-600 md:p-4 p-2 gap-8 rounded-lg border-2 border-green-300">
             <div className="my-auto">
                 <div className="md:text-lg text-sm text-green-200">Precio promedio:</div>
-                <div className="md:text-2xl text-xl text-green-100">S/ {Humanize.formatNumber(data?.price || 0, 2)}</div>
+                <div className="md:text-2xl text-xl text-green-100">S/ {Humanize.formatNumber(get_price(), 2)}</div>
             </div>
             <div
                 className="hidden sm:block text-green-300 my-auto bg-gradient-to-l from-green-700 via-green-800 to-green-900 rounded-full p-4">
@@ -36,7 +73,8 @@ const Badge = ({data}) => {
             className="flex flex-row justify-between w-full md:w-max m-auto bg-gradient-to-r from-green-400 via-green-500 to-green-600 md:p-4 p-2 gap-8 rounded-lg border-2 border-green-300">
             <div className="my-auto">
                 <div className="md:text-lg text-sm text-green-200">Total a pagar:</div>
-                <div className="md:text-2xl text-xl text-green-100">S/ {Humanize.formatNumber(data?.total || 0, 2)}</div>
+                <div
+                    className="md:text-2xl text-xl text-green-100">S/ {Humanize.formatNumber(total, 2)}</div>
             </div>
             <div
                 className="hidden sm:block text-green-300 my-auto bg-gradient-to-l from-green-700 via-green-800 to-green-900 rounded-full p-4">

@@ -19,10 +19,11 @@ const Report = () => {
 
     const [params, setParams] = useState();
     const {content, setContent, isOpen, setIsOpen, openModal} = ModalHook();
-    const summary = useSelector(state => state.Operations.summary);
 
     const providers = useSelector(state => state.Collection.providers_category);
     const data = useSelector(state => state.Operations.lots);
+
+    const [total, setTotal] = useState(0);
 
 
     const {category} = useParams()
@@ -52,10 +53,11 @@ const Report = () => {
         <div className={"flex gap-4 w-full flex-col  md:flex-col   md:px-16 mt-8 px-4"}>
             <div className={"bg-white w-full rounded-lg p-4 mt-2"}>
                 <h1 className={"text-black font-bold text-start  pt-4 text-2xl overflow-scroll scrollbar-hide"}>Ingresos {category}</h1>
-                <Badge data={summary ? summary : []}/>
+                <Badge data={data ? data : []} total={total}/>
                 <Filter action={get_records_mp} category={category} setParams={setParams}
                         providers={providers ? providers : []} reference={tableRef.current}/>
-                <TableHistoryMP reference={tableRef} update={handleOpenModalUpdate} data={data ? data : []}/>
+                <TableHistoryMP setTotal={setTotal} reference={tableRef} update={handleOpenModalUpdate}
+                                data={data ? data : []}/>
             </div>
         </div>
 

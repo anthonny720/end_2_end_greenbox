@@ -3,7 +3,46 @@ from rest_framework import serializers
 from apps.logistic.models import ILot, Lot, Pallets, Output, RegisterOutput
 from .models import Motions
 
+class SummaryLotSerializer(serializers.ModelSerializer):
+    parcels_name = serializers.CharField(source='get_parcels_name', read_only=True)
+    amount_guide_kg = serializers.CharField(source='get_total_amount_guide_kg', read_only=True)
+    amount_net_kg = serializers.CharField(source='get_total_amount_net_kg', read_only=True)
+    discount_guide_kg = serializers.CharField(source='get_discount_guide_kg', read_only=True)
+    discount_net_kg = serializers.CharField(source='get_discount_net_kg', read_only=True)
+    provider_name = serializers.CharField(source='provider.business_name', read_only=True)
+    difference_kg = serializers.CharField(source='get_net_difference', read_only=True)
+    calibers = serializers.DictField(source='get_total_calibers', read_only=True)
+    weight_pallets = serializers.CharField(source='get_total_weight_pallets', read_only=True)
+    weight_boxes = serializers.CharField(source='get_total_weight_boxes', read_only=True)
+    quantity_boxes = serializers.CharField(source='get_total_boxes', read_only=True)
+    total_tare = serializers.CharField(source='get_total_tare', read_only=True)
+    net_weight = serializers.CharField(source='get_total_net_weight', read_only=True)
+    brute_weight = serializers.CharField(source='get_total_brute_weight', read_only=True)
+    business_maquila_name = serializers.CharField(source='maquila.business_name', read_only=True)
+    transport_name = serializers.CharField(source='transport.business_name', read_only=True)
+    condition_name = serializers.CharField(source='get_condition_name', read_only=True)
+    week = serializers.CharField(source='get_week', read_only=True)
+    month = serializers.CharField(source='get_month', read_only=True)
+    avg_box = serializers.CharField(source='get_avg_box', read_only=True)
+    year = serializers.CharField(source='get_year', read_only=True)
 
+    class Meta:
+        model = Lot
+        exclude =(
+            'id',
+            'drive',
+            'description',
+            'discount_description',
+            'merma',
+            'stock',
+            'closed',
+            'maquila',
+            'product',
+            'provider',
+            'transport',
+            'parcel',
+            'condition',
+        )
 class LotSerializer(serializers.ModelSerializer):
     parcels_name = serializers.CharField(source='get_parcels_name', read_only=True)
     amount_guide_kg = serializers.CharField(source='get_total_amount_guide_kg', read_only=True)

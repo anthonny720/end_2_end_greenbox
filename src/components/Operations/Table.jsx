@@ -1,16 +1,100 @@
-import React from 'react';
-import {map} from "lodash";
+import React, {useEffect} from 'react';
+import {map, sumBy} from "lodash";
 import Humanize from "humanize-plus";
 
-const TableHistoryMP = ({data, update, reference}) => {
+const TableHistoryMP = ({data, update, reference,setTotal}) => {
 
 
-    const columns = ['Acciones', 'Semana', 'Mes', 'Año', 'Lote', 'Planta', 'Fecha de salida Campo', 'Fecha de entrada', 'Fecha de descarga', 'Variedad', 'Condicion', 'Transporte', 'Guia de transportista', 'Guia de proveedor', 'Factura', 'Proveedor', 'Procedencia', 'Parcela', 'Promedio jabas', 'Cantidad de jabas', 'Peso bruto', 'Tara', 'Peso neto', 'Peso guia', 'Diferencia netos con guia', '% Rechazo', 'Kg rechazados', 'Kg aprovechables','% Descuento S/','Descuento S/', 'Precio Campo','Precio campo Final', 'Precio planta', 'Flete','Flete/und', 'Total a pagar campo','Total a pagar planta']
+    const columns = ['Acciones', 'Semana', 'Mes', 'Año', 'Lote', 'Planta', 'Fecha de salida Campo', 'Fecha de entrada', 'Fecha de descarga', 'Variedad', 'Condicion', 'Transporte', 'Guia de transportista', 'Guia de proveedor', 'Factura', 'Proveedor', 'Procedencia', 'Parcela', 'Promedio jabas', 'Cantidad de jabas', 'Peso bruto', 'Tara', 'Peso neto', 'Peso guia', 'Diferencia netos con guia', '% Rechazo', 'Kg rechazados', 'Kg aprovechables', '% Descuento S/', 'Descuento S/', 'Precio Campo', 'Precio campo Final', 'Precio planta', 'Flete', 'Flete/und', 'Total a pagar campo', 'Total a pagar planta']
+
+    const get_kg_usable = (item) => {
+        try {
+            return parseFloat(item?.lot?.net_weight) * (1 - parseFloat(item?.lot?.discount / 100))
+        } catch (e) {
+            return 0
+        }
+    }
+    const get_price_camp = (item) => {
+        try {
+            let kg_discount = parseFloat(item?.lot?.net_weight) * (parseFloat(item?.lot?.discount_price) / 100)
+            let kg_usable= (get_kg_usable(item) - kg_discount) * parseFloat(item?.price_camp)
+            let discount_soles = kg_discount * parseFloat(item?.lot?.discount_price_soles)
+            let price= (kg_usable + discount_soles) / get_kg_usable(item)
+            if (isNaN(price)){
+                return 0
+            }
+            return price
+        } catch (e) {
+            return 0
+        }
+    }
+
+    const get_price_plant = (item) => {
+        try {
+            const result= (parseFloat(get_kg_usable(item)) * parseFloat(get_price_camp(item)) + parseFloat(item?.freight)) / parseFloat(get_kg_usable(item))
+            if (isNaN(result)){
+                return 0
+            }
+            return result
+        } catch (e) {
+            return 0
+        }
+    }
+
+    const get_freight_unit = (item) => {
+        try {
+            const result= parseFloat(item?.freight) / parseFloat(item?.lot?.net_weight)
+            if (isNaN(result)){
+                return 0
+            }
+            return result
+        } catch (e) {
+            return 0
+        }
+    }
+
+    const get_total_amount_camp = (item) => {
+        try {
+            return parseFloat(get_kg_usable(item)) * parseFloat(get_price_camp(item))
+        } catch (e) {
+            return 0
+        }
+    }
+
+    const get_total_amount_plant = (item) => {
+        try {
+
+            return parseFloat(get_kg_usable(item)) * parseFloat(get_price_plant(item))
+        } catch (e) {
+            return 0
+        }
+    }
+    const get_total = () => {
+        try {
+            return sumBy(
+                data, (o) => {
+                    return get_total_amount_plant(o)
+                }
+            )
+        } catch (e) {
+            return 0
+        }
+    }
+
+    useEffect(() => {
+        setTotal(get_total())
+    }, [data])
+
+
+
+
+
+
+
 
     return (<div className="w-full">
         <div className="mx-auto container bg-white dark:bg-gray-800">
             <div className="w-full overflow-x-scroll scrollbar-hide max-h-96">
-
                 <table className="min-w-full bg-white dark:bg-gray-800" ref={reference}>
 
                     <thead className="sticky top-0 bg-white dark:bg-gray-800 ">
@@ -61,34 +145,34 @@ const TableHistoryMP = ({data, update, reference}) => {
                             <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{new Date(item?.lot?.download_date + "T00:00:00-05:00").toLocaleDateString('es-PE', {
                                 year: 'numeric', month: 'numeric', day: 'numeric'
                             })}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.variety}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.condition_name}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.transport_name}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.carrier_guide}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.provider_guide}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.invoice}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.provider_name}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.origin}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.parcels_name}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.avg_box, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.quantity_boxes, 0)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.brute_weight, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.total_tare, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.net_weight, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.guide_weight, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.difference_kg, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_net_kg, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.kg_usable, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_price, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_price_soles, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.price_camp, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.price_camp_final, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.price_plant, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.freight, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.freight_unit, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.total_amount_camp, 2)}</td>
-                            <td className="text-sm  whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.total_amount_plant, 2)}</td>
+                            <td className="text-sm px-4 px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.variety}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.condition_name}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.transport_name}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.carrier_guide}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.provider_guide}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.invoice}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.provider_name}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.origin}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{item?.lot?.parcels_name}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.avg_box, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.quantity_boxes, 0)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.brute_weight, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.total_tare, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.net_weight, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.guide_weight, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.difference_kg, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_net_kg, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_kg_usable(item), 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_price, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.lot?.discount_price_soles, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.price_camp, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_price_camp(item), 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_price_plant(item), 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(item?.freight, 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_freight_unit(item), 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_total_amount_camp(item), 2)}</td>
+                            <td className="text-sm  px-4 whitespace-nowrap text-gray-800 leading-4 text-center font-light ">{Humanize.formatNumber(get_total_amount_plant(item), 2)}</td>
 
 
                         </tr>)

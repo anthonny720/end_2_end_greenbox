@@ -30,7 +30,7 @@ def get_filtered_query(category, provider, start_date, end_date, all_data):
         queryset = queryset.filter(lot__entry_date__range=[datetime.strptime(start_date, "%d/%m/%Y"),
                                                       datetime.strptime(end_date, "%d/%m/%Y")])
     else:
-        queryset = queryset[:50]
+        queryset = queryset[:30]
     return queryset
 
 
@@ -55,14 +55,9 @@ class ListRecordsView(APIView):
 
         queryset = get_filtered_query(category, provider, start_date, end_date, all_data)
         try:
-            report = {'kg': sum(c.get_kg_usable() for c in queryset),
-                      'total': sum(c.get_total_amount_plant() for c in queryset),
-                      }
-            report['price'] = report['total'] / report['kg'] if report['kg'] else 0
-
             serializer = RecordsSerializer(queryset, many=True)
             results = serializer.data
-            return Response({'data': results, 'summary': report}, status=status.HTTP_200_OK)
+            return Response({'data': results}, status=status.HTTP_200_OK)
         except Exception as e:
             error_message = 'Se ha producido un error inesperado en el servidor. Por favor, inténtelo de nuevo más tarde.'
             return Response({'error': error_message, 'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

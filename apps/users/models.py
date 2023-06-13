@@ -49,6 +49,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
         CONTABILIDAD = 'CONTABILIDAD', 'Contabilidad'
         GERENCIA = 'GERENCIA', 'Gerencia'
         COMERCIAL = 'COMERCIAL', 'Comercial'
+        PLANIFICACION = 'PLANIFICACION', 'Planificación'
 
     email = models.EmailField(max_length=255, unique=True, verbose_name='Correo electrónico')
     first_name = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nombre(s)')
