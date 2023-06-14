@@ -155,6 +155,7 @@ class ProcessPineapple(models.Model):
         except:
             return 0
 
+
     def get_brute_kg_1_4(self):
         try:
             return (self.enabled_1_4 / self.get_percent_enabled()) * 100

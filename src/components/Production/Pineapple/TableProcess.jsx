@@ -36,9 +36,7 @@ const TableProduction = ({update, reference}) => {
                                 </td>
                                 <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{item?.week}</td>
                                 <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">
-                                    {new Date(item?.date).toLocaleDateString('es-PE', {
-                                        year: "numeric", month: "numeric", day: "numeric", timeZone: "America/Lima"
-                                    })}
+                                    {item?.date}
                                 </td>
                                 <td className="text-sm bg-white px-6 whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.stock, 2)}</td>
                                 <td className="text-sm bg-white px-6 whitespace-no-wrap text-green-800 font-bold leading-4 text-center ">
