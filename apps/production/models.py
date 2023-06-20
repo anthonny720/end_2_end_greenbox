@@ -442,12 +442,10 @@ class MOD(models.Model):
 
     def get_productivity_conditioning(self):
         try:
-            total_hours = (self.get_total_hours_packing().total_seconds() / 3600)
-            return round(
-                (decimal.Decimal(self.get_total_process_kg_logistic()) / self.conditioning_people) / decimal.Decimal(
+            total_hours = self.get_total_hours_conditioning().total_seconds() / 3600
+            return round((decimal.Decimal(self.get_total_process_kg_logistic()) / self.conditioning_people) / decimal.Decimal(
                     total_hours), 2)
         except Exception as e:
-            print(e)
             return 0
 
     def get_cmo_packing_day(self):
@@ -510,6 +508,7 @@ class MOD(models.Model):
     def get_productivity_packing(self):
         try:
             total_hours = (self.get_total_hours_packing().total_seconds() / 3600)
-            return round((self.get_total_kg() / self.packing_people_day) / decimal.Decimal(total_hours), 2)
+            # return round((self.get_total_kg() / self.packing_people_day) / total_hours, 2)
+            return total_hours
         except Exception as e:
-            return 0
+            return str(e)
