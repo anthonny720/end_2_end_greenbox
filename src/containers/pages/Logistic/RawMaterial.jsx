@@ -30,7 +30,7 @@ const RawMaterial = () => {
     const info = useSelector(state => state.Logistic.lot)
     const data = useSelector(state => state.Logistic.data)
     const pallets = useSelector(state => state.Logistic.pallets)
-    const zones = useSelector(state => state.Management.storage_areas)
+    const zones = useSelector(state => state.Management.storage)
 
     useEffect(() => {
         dispatch(get_lot(lot))
