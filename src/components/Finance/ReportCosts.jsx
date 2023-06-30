@@ -4,10 +4,32 @@ import Humanize from "humanize-plus";
 
 export class ReportToPrint extends React.PureComponent {
     render() {
-        const columns = ['Tipo de Costo', 'Categoria', 'Ejecutado S/'];
-        console.log(this.props.data);
-
         const {data = "data"} = this.props;
+        const columns = ['Tipo de Costo', 'Categoria', 'Ejecutado S/'];
+
+
+        const total_cost_variable = () => {
+            try {
+                if (data?.kg_pt_total > 0){
+                    return data?.total_cost_mod / data?.kg_pt_total + data?.total_cost_md / data?.kg_pt_total + data?.total_cost_cif / data?.kg_pt_total
+                }
+                return 0
+            } catch (e) {
+                return 0;
+            }
+        };
+        const total_cost_production = () => {
+            try {
+                if (data?.kg_pt_total > 0){
+                    return (total_cost_variable()-data?.item_cif?.GLP?.cost)/data?.kg_pt_total
+                }
+                return 0
+            } catch (e) {
+                return 0;
+            }
+        };
+
+
         return (<div className={"w-full"}>
                 {/*logo*/}
                 <div className='grid grid-cols-3 gap-4 flex items-center justify-center'>
@@ -70,11 +92,11 @@ export class ReportToPrint extends React.PureComponent {
                     <tbody>
 
                     <tr>
-                        <td rowSpan={7}
-                            className={"px-2  text-center text-xs bg-green-200 font-semibold text-black"}>VARIABLE
+                        <td rowSpan={4}
+                            className={"px-2  text-center text-xs bg-green-200 font-semibold text-black"}>MD
                         </td>
                     </tr>
-                    {map(data?.item_variable, (row, index) => (<tr className="bg-white border-b">
+                    {map(data?.item_md, (row, index) => (<tr className="bg-white border-b">
                         <td className={"px-2 py-4 text-center text-xs"}>{row?.name}</td>
                         <td className={"px-2 py-4 text-center text-xs"}>S/ {Humanize.formatNumber(row?.cost, 2)}</td>
                     </tr>))}
@@ -82,20 +104,20 @@ export class ReportToPrint extends React.PureComponent {
 
                     <tr>
                         <td colSpan={2}
-                            className={"px-2  text-center text-xs  font-semibold text-black"}>
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>
                         </td>
                         <td colSpan={1}
-                            className={"px-2  text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_variable, 2)}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_md, 2)}
                         </td>
                     </tr>
 
                     <tr>
-                        <td rowSpan={6}
-                            className={"px-2  text-center text-xs bg-orange-200 font-semibold text-black"}>FIJO
+                        <td rowSpan={3}
+                            className={"px-2  text-center text-xs bg-orange-200 font-semibold text-black"}>MOD
                         </td>
                     </tr>
 
-                    {map(data?.item_fixed, (row, index) => (<tr className="bg-white border-b">
+                    {map(data?.item_mod, (row, index) => (<tr className="bg-white border-b">
                         <td className={"px-2 py-4 text-center text-xs"}>{row?.name}</td>
                         <td className={"px-2 py-4 text-center text-xs"}>S/ {Humanize.formatNumber(row?.cost, 2)}</td>
                     </tr>))}
@@ -104,24 +126,45 @@ export class ReportToPrint extends React.PureComponent {
                             className={"px-2 text-center text-xs  font-semibold text-black"}>
                         </td>
                         <td colSpan={1}
-                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_fixed, 2)}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_mod, 2)}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td rowSpan={12}
+                            className={"px-2  text-center text-xs bg-blue-200 font-semibold text-black"}>CIF
+                        </td>
+                    </tr>
+
+                    {map(data?.item_cif, (row, index) => (<tr className="bg-white border-b">
+                        <td className={"px-2 py-4 text-center text-xs"}>{row?.name}</td>
+                        <td className={"px-2 py-4 text-center text-xs"}>S/ {Humanize.formatNumber(row?.cost, 2)}</td>
+                    </tr>))}
+
+
+                    <tr>
+                        <td colSpan={2}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>
+                        </td>
+                        <td colSpan={1}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_cif, 2)}
                         </td>
                     </tr>
 
                     <tr>
                         <td colSpan={2}
-                            className={"px-2 text-center text-xs  font-bold text-black"}>TOTAL COSTO PRODUCCION
+                            className={"px-2 text-center text-xs  font-bold text-black"}>TOTAL COSTO VARIABLE UNITARIO
                         </td>
                         <td colSpan={1}
-                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost, 2)}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(total_cost_variable(), 2)}
                         </td>
                     </tr>
                     <tr>
                         <td colSpan={2}
-                            className={"px-2 text-center text-xs  font-bold text-black"}>TOTAL COSTO UNITARIO
+                            className={"px-2 text-center text-xs  font-bold text-black"}>TOTAL COSTO PRODUCCION UNITARIO
                         </td>
                         <td colSpan={1}
-                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(data?.total_cost_unit, 2)}
+                            className={"px-2 text-center text-xs  font-semibold text-black"}>S/ {Humanize.formatNumber(total_cost_production(), 2)}
                         </td>
                     </tr>
                     </tbody>

@@ -15,11 +15,11 @@ import ReportViewer from "../../../components/Logistic/RawMaterial/Report";
 import Modal from "../../../components/util/Modal";
 import LabelViewer from "../../../components/Logistic/RawMaterial/Label";
 import FormData from "../../../components/Logistic/RawMaterial/Form";
-import {get_zones} from "../../../redux/actions/management";
 import {MySwal} from "../../../components/util/colors";
 import RegisterViewer from "../../../components/Logistic/RawMaterial/Register";
 import FormOutput from "../../../components/Logistic/RawMaterial/FormOutput";
 import Output from "../../../components/Logistic/RawMaterial/Output";
+import {get_storage_areas} from "../../../redux/actions/management";
 
 
 const RawMaterial = () => {
@@ -30,11 +30,11 @@ const RawMaterial = () => {
     const info = useSelector(state => state.Logistic.lot)
     const data = useSelector(state => state.Logistic.data)
     const pallets = useSelector(state => state.Logistic.pallets)
-    const zones = useSelector(state => state.Management.zones)
+    const zones = useSelector(state => state.Management.storage_areas)
 
     useEffect(() => {
         dispatch(get_lot(lot))
-        dispatch(get_zones())
+        dispatch(get_storage_areas())
         dispatch(get_pallets())
         dispatch(get_data(lot))
     }, []);

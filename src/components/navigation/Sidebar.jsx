@@ -3,13 +3,9 @@ import {map} from "lodash";
 import {NavLink} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faAddressCard,
     faArrowTrendUp,
     faBoxes,
-    faBoxesPacking,
     faBrain,
-    faBusAlt,
-    faCity,
     faCoins,
     faCompass,
     faCookieBite,
@@ -17,17 +13,16 @@ import {
     faDollyBox,
     faFire,
     faFlask,
-    faFolderOpen,
     faGears,
     faHandsAslInterpreting,
     faIndustry,
     faLeaf,
     faMagnifyingGlassChart,
+    faMicrochip,
     faMicroscope,
     faMoneyCheckDollar,
     faSackDollar,
-    faUsers,
-    faUserTie
+    faUsers
 } from "@fortawesome/free-solid-svg-icons";
 import {Disclosure} from "@headlessui/react";
 import {size} from "lodash/collection";
@@ -37,7 +32,7 @@ const Sidebar = () => {
         name: "Acopio",
         link: '/collection',
         icon: faLeaf,
-        submenus: [{name: "Proveedores", link: "/collection/providers", icon: faUserTie}, {
+        submenus: [{
             name: "Parcelas",
             link: "/collection/parcels",
             icon: faCompass
@@ -50,19 +45,6 @@ const Sidebar = () => {
             name: "Stock MP",
             link: "/logistic/stock",
             icon: faArrowTrendUp
-        }]
-    }, {
-        name: "Gestión",
-        link: "/management",
-        icon: faFolderOpen,
-        submenus: [{name: "Clientes", link: "/management/clients", icon: faAddressCard}, {
-            name: "Maquila",
-            link: "/management/maquila",
-            icon: faCity
-        }, {name: "Transportes", link: "/management/transport", icon: faBusAlt}, {
-            name: "Envases y embalajes",
-            link: "/management/packing",
-            icon: faBoxesPacking
         }]
     }, {
         name: "Producción",
@@ -90,24 +72,23 @@ const Sidebar = () => {
         submenus: [{name: "Análisis", link: "/quality-assurance/analysis", icon: faFlask},
             {name: "Status", link: "/quality-assurance/status", icon: faMicroscope}]
     }, {
-        name: "Ventas",
+        name: "Comercial",
         link: "/sales",
         icon: faMoneyCheckDollar,
         margin: true,
         submenus: [{name: "Muestras", link: "/sales/samples", icon: faCookieBite},]
     }, {
-        name: "Operaciones",
+        name: "Planificación",
         link: "/planning",
         icon: faBrain,
         margin: false,
-        submenus: [{name: "Pedidos", link: "/operations/orders", icon: faCookieBite},
-        ]
+        submenus: [{name: "S&OP", link: "/planning", icon: faMicrochip},]
     }, {
         name: "Finanzas",
-        link: "/Finance",
+        link: "/finance",
         icon: faDollarSign,
         margin: false,
-        submenus: [{name: "Costos", link: "/Finance/costs", icon: faCoins},]
+        submenus: [{name: "Costos", link: "/finance/costs", icon: faCoins},]
     },
         {
             name: "Configuración", link: "/settings", icon: faGears, margin: true, submenus: [

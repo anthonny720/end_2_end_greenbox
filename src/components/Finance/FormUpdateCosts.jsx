@@ -6,7 +6,7 @@ import {map} from "lodash";
 import {update_costs} from "../../redux/actions/finances";
 
 
-const FormUpdateCosts = ({data, close, params, values}) => {
+const FormUpdateCosts = ({data, close, params}) => {
 
     const [inf, setInf] = useState(data);
     const dispatch = useDispatch();
@@ -19,11 +19,7 @@ const FormUpdateCosts = ({data, close, params, values}) => {
     }
 
     return (<form className="bg-white  rounded px-8 pt-6 pb-8 mb-4">
-        <div className={"flex flex-row gap-2"}>
-            <p className={"text-xs  text-center"}>Materia Prima: {values?.cost_mp}</p>
-            <p className={"text-xs text-center"}>Transporte: {values?.cost_freight}</p>
-            <p className={"text-xs text-center"}>Costo MOD: {values?.cost_mod}</p>
-        </div>
+
 
 
         <div className={`grid grid-cols-2 gap-2`}>

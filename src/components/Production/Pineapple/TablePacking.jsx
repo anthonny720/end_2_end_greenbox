@@ -7,7 +7,7 @@ const TablePacking = ({update, reference}) => {
     const data = useSelector(state => state.Production.process)
 
 
-    const columns = ['Lote', 'Semana', 'Fecha', 'Kg procesados', 'Kg Total', 'Lote 1/4', 'Kg 1/4', '% Rend', 'Lote 1/8', 'Kg 1/8', '% Rend', 'Lote 1/16', 'Kg 1/16', '% Rend', 'Lote rings', 'Kg rings', '% Rend', 'Kg recuperable', 'Venta local', 'Calidad', '% Rendimiento pagado', '% Rendimiento neto']
+    const columns = ['Lote', 'Semana', 'Fecha', 'Kg procesados', 'Kg Total', 'Lote 1/4', 'Kg 1/4', '% Rend', 'Lote 1/8', 'Kg 1/8', '% Rend', 'Lote 1/16', 'Kg 1/16', '% Rend', 'Lote rings', 'Kg rings', '% Rend', 'Kg recuperable', 'Venta local', 'Calidad', '% Rendimiento procesado', '% Rendimiento neto']
 
 
     return (<div className="w-full">

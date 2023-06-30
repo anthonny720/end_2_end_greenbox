@@ -23,8 +23,8 @@ const Costs = () => {
 
     useEffect(() => {
         const data = {
-            'start_date': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
-            'end_date': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'UTC'}) : '',
+            'start_date': params ? new Date(params?.[0]).toLocaleDateString('es-PE', {timeZone: 'America/Lima'}) : '',
+            'end_date': params ? new Date(params?.[1]).toLocaleDateString('es-PE', {timeZone: 'America/Lima'}) : '',
         }
         dispatch(get_costs(data))
     }, [params]);

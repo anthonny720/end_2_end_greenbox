@@ -19,6 +19,7 @@ class Category(models.Model):
 
     name = models.CharField(max_length=100, verbose_name='Nombre')
     type = models.CharField(max_length=1, choices=(('V', 'Variable'), ('F', 'Fijo')), verbose_name='Tipo')
+    group = models.CharField(max_length=3, choices=(('MD', 'MD'), ('MOD', 'MOD'), ('CIF', 'CIF')), verbose_name='Grupo',blank=True)
     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name='Costo')
 
 
@@ -67,40 +68,7 @@ class ReportCost(models.Model):
         except:
             return 0
 
-    def get_cost_mod(self):
-        try:
-            return sum([item.get_total_cost_conditioning() for item in self.mod.all()]) + sum(
-                [item.get_total_cost_packing() for item in self.mod.all()])
-        except Exception as e:
-            return str(e)
 
-    def get_cost_mp(self):
-        try:
-            cost = sum(
-                [
-                    i.lot.record.get_price_plant() * j.get_paid_kg()
-                    for item in self.mod.all()
-                    for i in item.process.all()
-                    for j in i.process.all()
-                ]
-            )
-            return round(cost, 2)
-        except Exception as e:
-            return 0
-
-    def get_cost_freight(self):
-        try:
-            cost = sum(
-                [
-                    i.lot.record.get_freight_unit() * decimal.Decimal(j.stock.kg)
-                    for item in self.mod.all()
-                    for i in item.process.all()
-                    for j in i.process.all()
-                ]
-            )
-            return round(cost, 2)
-        except Exception as e:
-            return str(e)
 
     def get_performance(self):
         try:
@@ -108,50 +76,55 @@ class ReportCost(models.Model):
         except:
             return 0
 
-    def get_total_cost_fixed(self):
+    def get_total_cost_md(self):
         try:
             query = ReportCategory.objects.filter(report=self)
-            return sum([item.cost for item in query if item.category.type == 'F'])
+            return sum([item.cost for item in query if item.category.group == 'MD'])
         except:
             return 0
 
-    def get_total_cost_variable(self):
+    def get_total_cost_mod(self):
         try:
             query = ReportCategory.objects.filter(report=self)
-            return sum([item.cost for item in query if item.category.type == 'V'])
+            return sum([item.cost for item in query if item.category.group == 'MOD'])
         except:
             return 0
 
-    def get_total_cost(self):
+    def get_total_cost_cif(self):
         try:
-
-            return self.get_total_cost_fixed() + self.get_total_cost_variable()
+            query = ReportCategory.objects.filter(report=self)
+            return sum([item.cost for item in query if item.category.group == 'CIF'])
         except:
             return 0
 
-    def get_total_cost_unit(self):
-        try:
-            return self.get_total_cost() / self.get_kg_pt_total()
-        except:
-            return 0
-
-    def get_item_fixed(self):
+    def get_item_md(self):
         list = {}
         try:
             query = ReportCategory.objects.filter(report=self)
             for item in query:
-                if item.category.type == 'F':
+                if item.category.group == 'MD':
                     list[item.category.name] = {'id': item.id, 'cost': item.cost, 'name': item.category.name}
             return list
         except Exception as e:
             return list
 
-    def get_item_variable(self):
+    def get_item_mod(self):
         list = {}
         try:
             query = ReportCategory.objects.filter(report=self)
             for item in query:
-                if item.category.type == 'V':
+                if item.category.group == 'MOD':
+                    list[item.category.name] = {'id': item.id, 'cost': item.cost, 'name': item.category.name}
+            return list
+        except Exception as e:
+            return list
+
+    def get_item_cif(self):
+        list = {}
+        try:
+            query = ReportCategory.objects.filter(report=self)
+            for item in query:
+                if item.category.group == 'CIF':
                     list[item.category.name] = {'id': item.id, 'cost': item.cost, 'name': item.category.name}
             return list
         except Exception as e:

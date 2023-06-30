@@ -59,7 +59,12 @@ TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIR
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # Database
-DATABASES = {'default': {'ENGINE':'django.db.backends.postgresql','NAME':'trazabilidad_ddbb','USER':'anthonny','PASSWORD':'lO0sBzg&@7Kayr0H^PeT','HOST':'localhost','PORT':5432,}}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation

@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 
-from apps.management.models import ContactProxy
+from apps.management.models import CustomerSupplierProxy
 from apps.sales.models import HistoricalRecords
 
 
@@ -20,6 +20,7 @@ class Product(models.Model):
         ordering = ['name']
 
     name = models.CharField(max_length=100, verbose_name='Nombre')
+    enable = models.BooleanField(verbose_name='Estado',default=False)
 
     history = HistoricalRecords()
 
@@ -29,7 +30,7 @@ class Product(models.Model):
     def get_stock(self):
         t = 0
         try:
-            for c in self.product_lot.all():
+            for c in self.product_lot.filter(stock__gt=0):
                 t += c.stock
             return t
         except:
@@ -69,7 +70,7 @@ class Product(models.Model):
             return str(e)
 
 
-class Provider(ContactProxy):
+class Provider(CustomerSupplierProxy):
     class Meta:
         verbose_name = 'Proveedor'
         verbose_name_plural = 'Proveedores'
@@ -80,7 +81,7 @@ class Provider(ContactProxy):
     history = HistoricalRecords()
 
     def __str__(self):
-        return self.business_name
+        return self.display_name
 
 
 class Parcel(models.Model):

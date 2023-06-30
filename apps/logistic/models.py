@@ -8,7 +8,7 @@ from django.utils import timezone
 from simple_history.models import HistoricalRecords
 
 from apps.collection.models import Provider, Product, Parcel
-from apps.management.models import ProviderTransport, SuppliersMaquila, Location, Zone
+from apps.management.models import Transport, Outsourcing, Location, StorageArea
 
 User = get_user_model()
 
@@ -76,7 +76,7 @@ class Lot(models.Model):
         ORGANIC_BIOSUISSE_FAIRTRADE = 'OBF', 'Orgánico/Biosuisse/Fairtrade'
         ORGANIC_JAS_FAIRTRADE = 'OJF', 'Orgánico/Jas/Fairtrade'
 
-    maquila = models.ForeignKey(SuppliersMaquila, on_delete=models.CASCADE, null=True, blank=True,
+    maquila = models.ForeignKey(Outsourcing, on_delete=models.CASCADE, null=True, blank=True,
                                 verbose_name="Packing")
     product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="product_lot", verbose_name="Producto")
     provider = models.ForeignKey(Provider, on_delete=models.PROTECT, related_name="provider_lot",
@@ -95,7 +95,7 @@ class Lot(models.Model):
     condition = models.CharField(max_length=12, choices=Condition.choices, default=Condition.CONVENTIONAL,
                                  verbose_name="Condición")
     variety = models.CharField(max_length=100, verbose_name="Variedad", blank=True, null=True)
-    origin = models.CharField(max_length=100, verbose_name="Variedad", blank=True, null=True)
+    origin = models.CharField(max_length=100, verbose_name="Origen", blank=True, null=True)
 
     lot = models.CharField(max_length=13, unique=True, verbose_name="Lote")
 
@@ -113,7 +113,7 @@ class Lot(models.Model):
     discount_price_soles = models.DecimalField(decimal_places=2, max_digits=4, default=0.00, blank=True, null=True,
                                                verbose_name='Soles Descuento Precio')
 
-    transport = models.ForeignKey(ProviderTransport, on_delete=models.PROTECT, related_name="carrier_lot",
+    transport = models.ForeignKey(Transport, on_delete=models.PROTECT, related_name="carrier_lot",
                                   verbose_name="Empresa de transporte", blank=True, null=True)
     merma = models.DecimalField(decimal_places=3, max_digits=11, default=0, blank=True, null=True, verbose_name="Merma",
                                 editable=False)
@@ -335,16 +335,15 @@ class ILot(models.Model):
     c12 = models.IntegerField(default=0, verbose_name="Calibre 12")
     c14 = models.IntegerField(default=0, verbose_name="Calibre 14")
     lot = models.ForeignKey(Lot, on_delete=models.PROTECT, verbose_name="Lote", related_name="i_lot")
-    location = models.ForeignKey(Zone, on_delete=models.PROTECT, verbose_name="Ubicación de almacenamiento",
+    location = models.ForeignKey(StorageArea, on_delete=models.PROTECT, verbose_name="Ubicación de almacenamiento",
                                  related_name="i_lot")
     history = HistoricalRecords()
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+            self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
         self.tare = self.get_total_tare()
         super(ILot, self).save()
-
 
     def __str__(self):
         return str(self.id) + " - " + self.lot.lot

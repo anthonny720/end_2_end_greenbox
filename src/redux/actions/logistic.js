@@ -36,7 +36,7 @@ import {
     UPDATE_DATA_LOT_SUCCESS,
 } from "./types";
 import {setAlert} from "./alert";
-import {get_location} from "./management";
+import {get_locations} from "./management";
 
 
 export const add_lot = (form) => async dispatch => {
@@ -378,7 +378,7 @@ export const get_motion_boxes = (params) => async dispatch => {
             dispatch({
                 type: GET_MOTION_BOXES_SUCCESS, payload: res.data
             });
-            dispatch(get_location());
+            dispatch(get_locations());
         } else {
             dispatch({
                 type: GET_MOTION_BOXES_FAIL

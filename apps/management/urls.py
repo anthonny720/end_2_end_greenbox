@@ -1,18 +1,43 @@
 from django.urls import path
 
-from apps.management.views import (ListClientsView,
-
-                                   ListProviderPackingView,
-                                   ListSuppliersMaquilaView,
-                                   ListProviderTransportView,
-                                   ListZoneView, ListLocationView)
-
+from apps.management.views import (ListCustomerView,
+                                   ListSuppliersView,
+                                   ListOutsourcingView,
+                                   ListTransportView,
+                                   ListStorageAreaView,
+                                   ListLocationView,
+                                   ListCostProductionView,
+                                   ListUnitOfMeasurementView,
+                                   ListCategoriesView,
+                                   ListTaxRatesView,
+                                   ListCurrencyView,
+                                   ListConditionView,
+                                   ListFamilyView,
+                                   ListSubFamilyView,
+                                   ListCutView,
+                                   ListPackingView, DetailCustomerView, DetailSuppliersView, DetailOutsourcingView,
+                                   DetailTransportView)
 app_name = "management"
 urlpatterns = [
-    path('clients', ListClientsView.as_view(), name='list_clients'),
-    path('providers_packing', ListProviderPackingView.as_view(), name='list_providers_packing'),
-    path('suppliers_maquila', ListSuppliersMaquilaView.as_view(), name='list_suppliers_maquila'),
-    path('providers_transport', ListProviderTransportView.as_view(), name='list_providers_transport'),
-    path('locations', ListLocationView.as_view(), name='list_locations'),
-    path('zones', ListZoneView.as_view(), name='list_zones'),
+    path('customers', ListCustomerView.as_view()),
+    path('customers/<str:slug>', DetailCustomerView.as_view()),
+    path('suppliers', ListSuppliersView.as_view()),
+    path('suppliers/<str:slug>', DetailSuppliersView.as_view()),
+    path('outsourcings', ListOutsourcingView.as_view()),
+    path('outsourcings/<str:slug>', DetailOutsourcingView.as_view()),
+    path('transports', ListTransportView.as_view()),
+    path('transports/<str:slug>', DetailTransportView.as_view()),
+    path('storage-areas', ListStorageAreaView.as_view()),
+    path('locations', ListLocationView.as_view()),
+    path('costs', ListCostProductionView.as_view()),
+    path('units', ListUnitOfMeasurementView.as_view()),
+    path('categories', ListCategoriesView.as_view()),
+    path('taxes', ListTaxRatesView.as_view()),
+    path('currencies', ListCurrencyView.as_view()),
+    path('conditions', ListConditionView.as_view()),
+    path('families', ListFamilyView.as_view()),
+    path('subfamilies', ListSubFamilyView.as_view()),
+    path('cuts', ListCutView.as_view()),
+    path('packings', ListPackingView.as_view()),
+
 ]

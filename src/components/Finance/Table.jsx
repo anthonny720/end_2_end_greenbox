@@ -5,7 +5,35 @@ import {DocumentIcon} from "@heroicons/react/24/outline";
 
 const TableCosts = ({update, reference, data, viewer}) => {
 
-    const columns = ['', 'Fecha', 'Materia Prima', 'Kg procesados', 'Kg de producto terminado', 'Rendimiento', 'Costo producción', 'Costo unitario'];
+    const columns = ['', 'Fecha', 'Materia Prima', 'Kg procesados', 'Kg de producto terminado', 'Rendimiento', 'Costo total', 'Costo producción', 'Costo unitario'];
+
+    const total_cost_variable = (data) => {
+        try {
+            if (data?.kg_pt_total > 0) {
+                return data?.total_cost_mod / data?.kg_pt_total + data?.total_cost_md / data?.kg_pt_total + data?.total_cost_cif / data?.kg_pt_total
+            }
+            return 0
+        } catch (e) {
+            return 0;
+        }
+    };
+    const total_cost = (data) => {
+        try {
+            return parseInt(data?.total_cost_md) + parseInt(data?.total_cost_mod) + parseInt(data?.total_cost_cif)
+        } catch (e) {
+            return 0;
+        }
+    };
+    const total_cost_production = (data) => {
+        try {
+            if (data?.kg_pt_total > 0) {
+                return (total_cost_variable(data) - data?.item_cif?.GLP?.cost) / data?.kg_pt_total
+            }
+            return 0
+        } catch (e) {
+            return 0;
+        }
+    };
 
     return (<div className="w-full">
         <div className="mx-auto container bg-white dark:bg-gray-800">
@@ -55,8 +83,9 @@ const TableCosts = ({update, reference, data, viewer}) => {
                             <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.kg_total, 2)}</td>
                             <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.kg_pt_total, 2)}</td>
                             <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.performance, 2)}</td>
-                            <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.total_cost, 2)}</td>
-                            <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(item?.total_cost_unit, 2)}</td>
+                            <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(total_cost(item), 2)}</td>
+                            <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(total_cost_production(item), 2)}</td>
+                            <td className="text-sm bg-white  whitespace-no-wrap text-gray-800 font-normal leading-4 text-center ">{Humanize.formatNumber(total_cost_variable(item), 2)}</td>
 
                         </tr>)
 

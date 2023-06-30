@@ -1,46 +1,75 @@
 from rest_framework import serializers
 
-from apps.management.models import Clients, ProviderPacking, SuppliersMaquila, ProviderTransport, Zone, Location, \
-    ContactProxy
+from apps.management.models import *
 
 
-class ContactProxySerializer(serializers.ModelSerializer):
+class CustomerSupplierProxySerializer(serializers.ModelSerializer):
     class Meta:
-        model = ContactProxy
+        model = CustomerSupplierProxy
         fields = '__all__'
 
-
-class ClientsSerializer(ContactProxySerializer):
+class CustomerSerializer(CustomerSupplierProxySerializer):
     class Meta:
-        model = Clients
+        model = Customer
         fields = '__all__'
-
-
-class ProviderPackingSerializer(ContactProxySerializer):
+class SuppliersSerializer(CustomerSupplierProxySerializer):
     class Meta:
-        model = ProviderPacking
+        model = Suppliers
         fields = '__all__'
-
-
-class SuppliersMaquilaSerializer(ContactProxySerializer):
+class OutsourcingSerializer(CustomerSupplierProxySerializer):
     class Meta:
-        model = SuppliersMaquila
+        model = Outsourcing
         fields = '__all__'
-
-
-class ProviderTransportSerializer(ContactProxySerializer):
+class TransportSerializer(CustomerSupplierProxySerializer):
     class Meta:
-        model = ProviderTransport
+        model = Transport
         fields = '__all__'
-
-
-class ZoneSerializer(ContactProxySerializer):
+class StorageAreaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Zone
+        model = StorageArea
         fields = '__all__'
-
-
-class LocationSerializer(ContactProxySerializer):
+class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = '__all__'
+class CostProductionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CostProduction
+        fields = '__all__'
+class UnitOfMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UnitOfMeasurement
+        fields = '__all__'
+class CategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categories
+        fields = '__all__'
+class TaxRatesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaxRates
+        fields = '__all__'
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = '__all__'
+class ConditionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Condition
+        fields = '__all__'
+class FamilySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Family
+        fields = '__all__'
+class SubFamilySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubFamily
+        fields = '__all__'
+class CutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cut
+        fields = '__all__'
+class PackingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Packing
+        fields = '__all__'
+
