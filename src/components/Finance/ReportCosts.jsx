@@ -11,7 +11,7 @@ export class ReportToPrint extends React.PureComponent {
         const total_cost_variable = () => {
             try {
                 if (data?.kg_pt_total > 0){
-                    return data?.total_cost_mod / data?.kg_pt_total + data?.total_cost_md / data?.kg_pt_total + data?.total_cost_cif / data?.kg_pt_total
+                    return data?.total_cost_mod / data?.kg_pt_total + data?.total_cost_md / data?.kg_pt_total + data?.item_cif?.GLP?.cost / data?.kg_pt_total
                 }
                 return 0
             } catch (e) {
@@ -21,7 +21,7 @@ export class ReportToPrint extends React.PureComponent {
         const total_cost_production = () => {
             try {
                 if (data?.kg_pt_total > 0){
-                    return (total_cost_variable()-data?.item_cif?.GLP?.cost)/data?.kg_pt_total
+                    return ((data?.total_cost_cif-data?.item_cif?.GLP?.cost)/data?.kg_pt_total)+ total_cost_variable()
                 }
                 return 0
             } catch (e) {
@@ -92,7 +92,7 @@ export class ReportToPrint extends React.PureComponent {
                     <tbody>
 
                     <tr>
-                        <td rowSpan={4}
+                        <td rowSpan={5}
                             className={"px-2  text-center text-xs bg-green-200 font-semibold text-black"}>MD
                         </td>
                     </tr>

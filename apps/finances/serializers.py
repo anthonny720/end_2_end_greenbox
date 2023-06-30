@@ -26,6 +26,7 @@ class CostSerializer(serializers.ModelSerializer):
     total_cost_md=serializers.CharField(source='get_total_cost_md',read_only=True)
     total_cost_mod=serializers.CharField(source='get_total_cost_mod',read_only=True)
     total_cost_cif=serializers.CharField(source='get_total_cost_cif',read_only=True)
+    item_variable=serializers.DictField(source='get_item_variable',read_only=True)
     item_md=serializers.DictField(source='get_item_md',read_only=True)
     item_mod=serializers.DictField(source='get_item_mod',read_only=True)
     item_cif=serializers.DictField(source='get_item_cif',read_only=True)

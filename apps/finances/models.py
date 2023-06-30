@@ -130,6 +130,17 @@ class ReportCost(models.Model):
         except Exception as e:
             return list
 
+    def get_item_variable(self):
+        list = {}
+        try:
+            query = ReportCategory.objects.filter(report=self)
+            for item in query:
+                if item.category.type == 'V':
+                    list[item.category.name] = {'id': item.id, 'cost': item.cost, 'name': item.category.name}
+            return list
+        except Exception as e:
+            return list
+
     def get_week(self):
         return self.date.isocalendar()[1]
 
